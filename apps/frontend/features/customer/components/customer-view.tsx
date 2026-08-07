@@ -44,7 +44,7 @@ export default function CustomerView() {
           <div className="flex items-center gap-2">
             <DataTableSearch
               table={table}
-              column="name"
+              column="companyName"
               placeholder="Search customers..."
             />
             <Button

@@ -30,8 +30,10 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                                 .requestMatchers("/api/auth/login").permitAll()
-                                                .requestMatchers("/api/recipes/**").permitAll()
-                                                .requestMatchers("/api/batch-audits/**").permitAll()
+                                                .requestMatchers("/api/customers/**").permitAll()
+                                                .requestMatchers("/api/user/**").permitAll()
+                                                .requestMatchers("/api/plans/**").permitAll()
+                                                .requestMatchers("/api/license/**").permitAll()
                                                 .anyRequest().authenticated())
                                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                                 .build();
