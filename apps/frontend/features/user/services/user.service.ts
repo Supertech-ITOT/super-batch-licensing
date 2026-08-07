@@ -1,7 +1,10 @@
-import api from "@/app/common/lib/axios";
-import { ApiResponse } from "@/app/common/types/api.types";
+import api from "../../../common/lib/axios";
+import { ApiResponse } from "../../../common/types/api.types";
 import {
+  ChangePasswordRequest,
   CreateUserRequest,
+  ResetFirstPasswordRequest,
+  ResetPasswordRequest,
   UpdateUserRequest,
   UserResponse,
 } from "../types/user.types";
@@ -18,7 +21,7 @@ export const getById = async (id: number) => {
 
 export const create = async (data: CreateUserRequest) => {
   const res = await api.post<ApiResponse<void>>("/user", data);
-  return res.dats;
+  return res.data;
 };
 
 export const update = async (id: number, data: UpdateUserRequest) => {
@@ -28,5 +31,35 @@ export const update = async (id: number, data: UpdateUserRequest) => {
 
 export const remove = async (id: number) => {
   const res = await api.delete<ApiResponse<void>>(`/user/${id}`);
+  return res.data;
+};
+
+export const changePassword = async (data: ChangePasswordRequest) => {
+  const res = await api.put<ApiResponse<void>>(
+    "/users/me/change-password",
+    data,
+  );
+  return res.data;
+};
+
+export const resetFirstPassword = async (data: ResetFirstPasswordRequest) => {
+  const res = await api.put<ApiResponse<void>>(
+    "/users/me/reset-first-password",
+    data,
+  );
+  return res.data;
+};
+
+export const resetPassword = async ({
+  id,
+  data,
+}: {
+  id: number;
+  data: ResetPasswordRequest;
+}) => {
+  const res = await api.put<ApiResponse<void>>(
+    `/users/${id}/reset-password`,
+    data,
+  );
   return res.data;
 };

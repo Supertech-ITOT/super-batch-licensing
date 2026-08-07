@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "../common/lib/utils";
 import { Toaster } from "../common/components/ui/sonner";
+import QueryProvider from "../common/providers/query-provider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -20,11 +21,13 @@ export default function RootLayout({
       className={cn("antialiased", "font-sans", inter.variable)}
     >
       <body className="min-h-screen sm:h-screen sm:overflow-hidden">
-        <div className="flex h-full flex-col">
-          <main className="flex-1 overflow-hidden">{children}</main>
-        </div>
+        <QueryProvider>
+          <div className="flex h-full flex-col">
+            <main className="flex-1 overflow-hidden">{children}</main>
+          </div>
 
-        <Toaster richColors position="bottom-right" />
+          <Toaster richColors position="bottom-right" />
+        </QueryProvider>
       </body>
     </html>
   );

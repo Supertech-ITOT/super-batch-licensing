@@ -7,4 +7,5 @@ export interface LoginResponse {
   accessToken: string;
   tokenType: string;
   userName: string;
+  passwordChangeRequired: boolean;
 }

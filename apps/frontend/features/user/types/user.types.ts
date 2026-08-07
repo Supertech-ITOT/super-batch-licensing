@@ -21,3 +21,16 @@ export interface UpdateUserRequest {
   name: string;
   status: UserStatus;
 }
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface ResetFirstPasswordRequest {
+  password: string;
+}
+
+export interface ResetPasswordRequest {
+  password: string;
+}

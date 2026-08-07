@@ -1,119 +1,38 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/toast";
-import { Eye, EyeOff, Lock, ShieldCheck, User } from "lucide-react";
+"use client";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useState } from "react";
+import { ShieldCheck } from "lucide-react";
+import LoginForm from "./login-form";
+import ResetFirstPasswordForm from "./reset-first-password-form";
 
-export default function LoginCard() {
-  const [showPassword, setShowPassword] = useState(false);
-  const { mutateAsync, isPending } = useLogin();
-  const router = useRouter();
+type AuthMode = "login" | "reset-password";
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors, isDirty, isSubmitting },
-  } = useForm<LoginSchema>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
-  });
-  const loading = isSubmitting || isPending;
-  const onSubmit = async (data: LoginSchema) => {
-    try {
-      const res = await mutateAsync(data);
-      toast.success(res.message ?? "Login Successfully");
-      router.replace("/PlantModel");
-    } catch (error) {
-      showApiError(error);
-    }
-  };
+interface LoginCardProps {
+  mode: AuthMode;
+}
+
+export default function LoginCard({ mode }: LoginCardProps) {
   return (
-    <div className="flex w-full max-w-md flex-col rounded-2xl border bg-card/60 p-10 shadow-2xl backdrop-blur-xl">
-      {/* Logo Section */}
-      <div className="flex items-center justify-center gap-4">
+    <div className="flex w-full max-w-md flex-col rounded-2xl border bg-card/60 p-2 sm:p-10 shadow-2xl backdrop-blur-xl">
+      <div className="flex justify-center">
         <Image
           src="/icon.png"
-          alt="SuperBatch Icon"
-          priority
+          alt="SuperBatch"
           width={102}
           height={102}
-          draggable={false}
-          className="object-contain"
+          priority
         />
       </div>
-      {/* Content Section */}
-      <div>
-        <h1 className="flex justify-center items-center font-bold mt-8">
-          Welcome Back
-        </h1>
-        <span className="text-muted-foreground flex items-center justify-center font-semibold">
-          Sign in to continue to SuperBatch
-        </span>
-      </div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-5 mt-6"
-      >
-        <div className="relative">
-          <User className="w-4 h-4 absolute left-2 top-1/2 -translate-y-1/2" />
-          <Input
-            disabled={loading}
-            placeholder="abc@gmail.com"
-            type="email"
-            {...register("email")}
-            className="pl-8 bg-background h-12"
-          />
-        </div>
-        <div className="relative">
-          <Lock className="w-4 h-4 absolute left-2 top-1/2 -translate-y-1/2" />
-          <Input
-            disabled={loading}
-            placeholder="Password"
-            type={showPassword ? "text" : "password"}
-            {...register("password")}
-            className="pl-8 bg-background h-12"
-          />
-          <Button
-            variant={"ghost"}
-            type="button"
-            className="absolute right-2 top-1/2 -translate-y-1/2"
-            onClick={() => setShowPassword((prev) => !prev)}
-          >
-            {showPassword ? (
-              <EyeOff className="w-4 h-4 " />
-            ) : (
-              <Eye className="w-4 h-4" />
-            )}
-          </Button>
-        </div>
 
-        <Button
-          className="text-primary place-self-end"
-          disabled={loading}
-          variant="link"
-          type="button"
-          onClick={() => toast.warning("Please contact an administrator")}
-        >
-          Forgot Password?
-        </Button>
-        <Button
-          disabled={loading || !isDirty}
-          type="submit"
-          className="h-12! text-white"
-        >
-          Sign In
-        </Button>
-      </form>
-      <div className="mt-10 flex items-center gap-3 rounded-2xl ">
-        <ShieldCheck className="text-primary" />
+      {mode === "login" ? <LoginForm /> : <ResetFirstPasswordForm />}
+
+      <div className="mt-4 flex items-center gap-2">
+        <ShieldCheck className="text-primary size-10 shrink-0" />
 
         <div>
           <p className="font-semibold">Secured Connection</p>
 
-          <p className="text-sm text-muted-foreground">
-            All data is encrypted and protected
+          <p className="text-xs text-muted-foreground">
+            All data is encrypted and protected.
           </p>
         </div>
       </div>

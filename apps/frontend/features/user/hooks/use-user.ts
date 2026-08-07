@@ -1,10 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "../../common/query-keys";
 import {
+  changePassword,
   create,
   getAll,
   getById,
   remove,
+  resetFirstPassword,
+  resetPassword,
   update,
 } from "../services/user.service";
 import { UpdateUserRequest } from "../types/user.types";
@@ -58,6 +61,38 @@ export const useDeleteUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: remove,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.users,
+      });
+    },
+  });
+};
+
+export const useChangePassword = () => {
+  return useMutation({
+    mutationFn: changePassword,
+  });
+};
+
+export const useResetFirstPassword = () => {
+  return useMutation({
+    mutationFn: resetFirstPassword,
+    onSuccess: () => {
+      const stored = localStorage.getItem("user");
+      if (stored) {
+        const user = JSON.parse(stored);
+        user.passwordChangeRequired = false;
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+    },
+  });
+};
+
+export const useResetPassword = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: resetPassword,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.users,

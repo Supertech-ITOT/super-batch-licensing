@@ -1,18 +1,25 @@
-import { Database, MonitorCheck, Settings, ShieldCheck } from "lucide-react";
+import {
+  Activity,
+  BadgeCheck,
+  FileText,
+  Layers3,
+  ShieldCheck,
+} from "lucide-react";
 import Image from "next/image";
-import FeatureCard from "../common/components/featurecard";
-import FooterCard from "../common/components/footercard";
-import LoginCard from "../features/auth/components/loginCard";
+import FeatureCard from "../../common/components/featurecard";
+import LoginCard from "../../features/auth/components/loginCard";
+import FooterCard from "../../common/components/footercard";
 const finfo = [
-  { icon: ShieldCheck, title: "Secure licensing" },
-  { icon: Database, title: "Centralized Management" },
-  { icon: MonitorCheck, title: "Real-time Monitoring" },
-  { icon: Settings, title: "Enterprise Ready" },
+  { icon: Layers3, title: "ISA-88", subtitle: "Compliant" },
+  { icon: Activity, title: "Real-time", subtitle: "Monitoring" },
+  { icon: FileText, title: "Recipe", subtitle: "Management" },
+  { icon: ShieldCheck, title: "Audit", subtitle: "Compliance" },
+  { icon: BadgeCheck, title: "Scalable", subtitle: "Secure" },
 ];
 
-export default function Home() {
+export default function ResetFirstPasswordPage() {
   return (
-    <div className="h-full min-h-0 w-full flex flex-row overflow-hidden relative">
+    <div className="h-full w-full flex flex-row overflow-hidden relative">
       <div className="absolute inset-0">
         <Image
           src="/light-bg.png"
@@ -22,6 +29,7 @@ export default function Home() {
           draggable={false}
           className="object-cover dark:hidden"
         />
+
         <Image
           src="/dark-bg.png"
           alt="Background"
@@ -57,11 +65,12 @@ export default function Home() {
           </div>
           <div className="mt-8">
             <h2 className="text-3xl font-bold">
-              License Manager Empower Your Batch Operation.
+              Enterprise Batch Management Solution
             </h2>
             <p className="text-md font-semibold leading-5 text-muted-foreground  max-w-xl text-justify mt-3">
-              Centralized license management for Batch Management Systems. Built
-              for reliability. Designed for enterprise.
+              SuperBatch is an advanced ISA-88 based batch management system
+              designed for process industries to achieve operational excellence,
+              product quality and regulatory compliance.
             </p>
           </div>
           {/* Features */}
@@ -77,7 +86,7 @@ export default function Home() {
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-4 justify-center items-center p-2">
-        <LoginCard mode="login" />
+        <LoginCard mode="reset-password" />
       </div>
       <FooterCard />
     </div>
