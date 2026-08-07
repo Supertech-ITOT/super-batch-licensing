@@ -11,7 +11,7 @@ import {
 import { Button } from "../../../common/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 
-export const customerColumns: ColumnDef<CustomerResponse>[] = [
+export const columns: ColumnDef<CustomerResponse>[] = [
   { id: "srNo", header: "Sr.No", cell: ({ row }) => row.index + 1 },
   { accessorKey: "companyName", header: "Company Name" },
   { id: "email", header: "Email" },

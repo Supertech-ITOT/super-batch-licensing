@@ -1,0 +1,42 @@
+"use client";
+
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useMemo } from "react";
+
+const titleMap: Record<string, string> = {
+  Customers: "Customers",
+  Plans: "Plans",
+  Users: "Users",
+  Licenses: "Licenses",
+};
+
+export function ModuleBreadcrumb() {
+  const pathname = usePathname();
+  const breadcrumbs = useMemo(() => {
+    const segments = pathname.split("/").filter(Boolean);
+    return segments.map((segment, index) => ({
+      href: "/" + segments.slice(0, index + 1).join("/"),
+      label: titleMap[segment] ?? segment,
+      isLast: index === segments.length - 1,
+    }));
+  }, [pathname]);
+  return (
+    <div className="flex items-center gap-0.5 sm:gap-1  text-[10px] sm:text-xs text-muted-foreground">
+      <Link href="/">Home</Link>
+
+      {breadcrumbs.map(({ href, label, isLast }) => (
+        <div key={href} className="flex items-center gap-0.5 sm:gap-1">
+          <ChevronRight className="size-2 shrink-0 sm:size-3" />
+          <Link
+            href={href}
+            className={isLast ? "font-medium text-foreground" : ""}
+          >
+            {label}
+          </Link>
+        </div>
+      ))}
+    </div>
+  );
+}
