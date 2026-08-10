@@ -9,7 +9,7 @@ import {
   update,
 } from "../service/license.service";
 
-export const useGetLicenses = () => {
+export const useGetAllLicenses = () => {
   return useQuery({
     queryKey: queryKeys.licenses,
     queryFn: async () => {

@@ -6,7 +6,6 @@ import com.supertech.backend.plan.dto.CreatePlanRequest;
 import com.supertech.backend.plan.dto.PlanResponse;
 import com.supertech.backend.plan.dto.UpdatePlanRequest;
 import com.supertech.backend.plan.entity.Plans;
-import com.supertech.backend.plan.enums.PlanStatus;
 
 @Component
 public class PlanMapper {
@@ -18,7 +17,6 @@ public class PlanMapper {
                 .durationMonths(requset.durationMonths())
                 .maxUsers(requset.maxUsers())
                 .price(requset.price())
-                .status(requset.status() != null ? requset.status() : PlanStatus.ACTIVE)
                 .build();
     }
 
@@ -29,7 +27,6 @@ public class PlanMapper {
         plans.setDurationMonths(request.durationMonths());
         plans.setMaxUsers(request.maxUsers());
         plans.setPrice(request.price());
-        plans.setStatus(request.status());
     }
 
     public PlanResponse toResponse(Plans plans) {
@@ -41,7 +38,6 @@ public class PlanMapper {
                 .durationMonths(plans.getDurationMonths())
                 .maxUsers(plans.getMaxUsers())
                 .price(plans.getPrice())
-                .status(plans.getStatus())
                 .createdAt(plans.getCreatedAt())
                 .updatedAt(plans.getUpdatedAt())
                 .build();

@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { CustomerResponse } from "../types/customer.types";
+import { PlanResponse } from "../types/plan.types";
+import { format } from "date-fns";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,15 +8,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../../common/components/ui/dropdown-menu";
-import { Button } from "../../../common/components/ui/button";
+} from "@/common/components/ui/dropdown-menu";
+import { Button } from "@/common/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-import { format } from "date-fns";
-import { DialogProp } from "./customer-view";
+import { DialogProp } from "./plan-view";
 
 export const columns = (
   setDialog: React.Dispatch<React.SetStateAction<DialogProp>>,
-): ColumnDef<CustomerResponse>[] => [
+): ColumnDef<PlanResponse>[] => [
   {
     id: "srNo",
     header: "Sr.No",
@@ -25,18 +25,58 @@ export const columns = (
     },
   },
   {
-    accessorKey: "companyName",
-    header: "Company Name",
+    accessorKey: "name",
+    header: "Name",
     meta: {
       align: "center",
     },
   },
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: "code",
+    header: "Code",
     meta: {
       align: "center",
     },
+    cell: ({ row }) => row.original.code,
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
+    meta: {
+      align: "center",
+    },
+    cell: ({ row }) => row.original.description || "-",
+  },
+  {
+    accessorKey: "durationMonths",
+    header: "Duration",
+    meta: {
+      align: "center",
+    },
+    cell: ({ row }) => {
+      const months = row.original.durationMonths;
+      return (
+        <>
+          {months} {months === 1 ? "Month" : "Months"}
+        </>
+      );
+    },
+  },
+  {
+    accessorKey: "maxUsers",
+    header: "Max Users",
+    meta: {
+      align: "center",
+    },
+    cell: ({ row }) => row.original.maxUsers,
+  },
+  {
+    accessorKey: "price",
+    header: "Price",
+    meta: {
+      align: "center",
+    },
+    cell: ({ row }) => row.original.price.toLocaleString("en-IN"),
   },
   {
     id: "lastModified",

@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.supertech.backend.plan.enums.PlanStatus;
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,9 +26,6 @@ public class Plans {
     private String description;
     private Integer durationMonths;
     private Integer maxUsers;
-
-    @Enumerated(EnumType.STRING)
-    private PlanStatus status;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

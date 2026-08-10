@@ -1,16 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { useGetAllCustomers } from "../hooks/use-customer";
-import FeedbackState from "../../../common/components/feedback-state";
-import { DataTable } from "../../../common/components/data-table/data-table";
-import { columns } from "./columns";
-import DataTableSearch from "../../../common/components/data-table/data-table-search";
-import { Button } from "../../../common/components/ui/button";
+import { useGetAllPlans } from "../hooks/use-plan";
+import FeedbackState from "@/common/components/feedback-state";
+import { DataTable } from "@/common/components/data-table/data-table";
+import DataTableSearch from "@/common/components/data-table/data-table-search";
+import { Button } from "@/common/components/ui/button";
 import { Plus } from "lucide-react";
-import CreateCustomerDialog from "./create-customer-dialog";
-import UpdateCustomerDialog from "./update-customer-dialog";
-import DeleteCustomerDialog from "./delete-customer-dialog";
+import { columns } from "./columns";
+import CreatePlanDialog from "./create-plan-dialog";
+import UpdatePlanDialog from "./update-plan-dialog";
 
 export type DialogProp = {
   action: "create" | "edit" | "delete" | null;
@@ -18,8 +17,8 @@ export type DialogProp = {
   open: boolean;
 };
 
-export default function CustomerView() {
-  const { data: customers, isLoading, isError } = useGetAllCustomers();
+export default function PlanView() {
+  const { data: plans, isLoading, isError } = useGetAllPlans();
   const [dialog, setDialog] = useState<DialogProp>({
     action: null,
     id: null,
@@ -33,21 +32,21 @@ export default function CustomerView() {
   if (isError) {
     return <FeedbackState variant="error" />;
   }
-  if (!customers) {
+  if (!plans) {
     return <FeedbackState variant="empty" />;
   }
   return (
     <div className="flex flex-col rounded-2xl border shadow  bg-card p-2 sm:p-4 flex-1">
       <DataTable
         columns={columns(setDialog)}
-        data={customers}
+        data={plans}
         pageSize={10}
         toolbar={(table) => (
           <div className="flex items-center gap-2">
             <DataTableSearch
               table={table}
-              column="companyName"
-              placeholder="Search customers..."
+              column="name"
+              placeholder="Search plans..."
             />
             <Button
               className="ml-auto text-white h-8 sm:h-10"
@@ -56,28 +55,20 @@ export default function CustomerView() {
               }
             >
               <Plus className="mr-2 h-4 w-4" />
-              Add Customer
+              Add Plan
             </Button>
           </div>
         )}
       />
-
       {
         <>
           {dialog.action === "create" && (
-            <CreateCustomerDialog open onClose={closeDialog} />
+            <CreatePlanDialog open onClose={closeDialog} />
           )}
           {dialog.action === "edit" && dialog.id != null && (
-            <UpdateCustomerDialog
+            <UpdatePlanDialog
               open={dialog.open}
-              customerId={dialog.id}
-              onClose={closeDialog}
-            />
-          )}
-          {dialog.action === "delete" && dialog.id != null && (
-            <DeleteCustomerDialog
-              open={dialog.open}
-              customerId={dialog.id}
+              planId={dialog.id}
               onClose={closeDialog}
             />
           )}

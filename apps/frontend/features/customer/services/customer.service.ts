@@ -21,12 +21,18 @@ export const create = async (data: CreateCustomerRequest) => {
   return res.data;
 };
 
-export const update = async (id: number, data: UpdateCustomerRequest) => {
+export const update = async ({
+  id,
+  data,
+}: {
+  id: number;
+  data: UpdateCustomerRequest;
+}) => {
   const res = await api.put<ApiResponse<void>>(`/customers/${id}`, data);
   return res.data;
 };
 
-export const remove = async (id: number) => {
+export const remove = async ({ id }: { id: number }) => {
   const res = await api.delete<ApiResponse<void>>(`/customers/${id}`);
   return res.data;
 };

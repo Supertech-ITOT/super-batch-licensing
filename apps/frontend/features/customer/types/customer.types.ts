@@ -15,5 +15,4 @@ export interface CreateCustomerRequest {
 export interface UpdateCustomerRequest {
   companyName: string;
   email: string;
-  status: string;
 }

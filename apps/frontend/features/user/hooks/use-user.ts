@@ -12,7 +12,7 @@ import {
 } from "../services/user.service";
 import { UpdateUserRequest } from "../types/user.types";
 
-export const useGetUsers = () => {
+export const useGetAllUsers = () => {
   return useQuery({
     queryKey: queryKeys.users,
     queryFn: async () => {
