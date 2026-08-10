@@ -34,7 +34,7 @@ export const OperationRoutes: RouteType[] = [
   {
     label: "Users",
     short: "Users",
-    path: "/users",
+    path: "/user",
     icon: UserCog,
     module: ModuleType.USERS,
     description: "Manage system users, administrators, and access permissions.",

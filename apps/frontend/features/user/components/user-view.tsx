@@ -1,25 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { useGetAllPlans } from "../hooks/use-plan";
+import { useGetAllUsers } from "../hooks/use-user";
 import FeedbackState from "@/common/components/feedback-state";
 import { DataTable } from "@/common/components/data-table/data-table";
+import { columns } from "./columns";
 import DataTableSearch from "@/common/components/data-table/data-table-search";
 import { Button } from "@/common/components/ui/button";
 import { Plus } from "lucide-react";
-import { columns } from "./columns";
-import CreatePlanDialog from "./create-plan-dialog";
-import UpdatePlanDialog from "./update-plan-dialog";
-import DeletePlanDialog from "./delete-plan-dialog";
+import CreateUserDialog from "./create-user-dialog";
+import UpdateUserDialog from "./update-user-dialog";
+import DeleteUserDialog from "./delete-user-dialog";
 
 export type DialogProp = {
   action: "create" | "edit" | "delete" | null;
   id: number | null;
   open: boolean;
 };
-
-export default function PlanView() {
-  const { data: plans, isLoading, isError } = useGetAllPlans();
+export default function UserView() {
+  const { data: users, isLoading, isError } = useGetAllUsers();
   const [dialog, setDialog] = useState<DialogProp>({
     action: null,
     id: null,
@@ -33,21 +32,21 @@ export default function PlanView() {
   if (isError) {
     return <FeedbackState variant="error" />;
   }
-  if (!plans) {
+  if (!users) {
     return <FeedbackState variant="empty" />;
   }
   return (
     <div className="flex flex-col rounded-2xl border shadow  bg-card p-2 sm:p-4 flex-1">
       <DataTable
         columns={columns(setDialog)}
-        data={plans}
+        data={users}
         pageSize={10}
         toolbar={(table) => (
           <div className="flex items-center gap-2">
             <DataTableSearch
               table={table}
               column="name"
-              placeholder="Search plans..."
+              placeholder="Search user..."
             />
             <Button
               className="ml-auto text-white h-8 sm:h-10"
@@ -56,7 +55,7 @@ export default function PlanView() {
               }
             >
               <Plus className="mr-2 h-4 w-4" />
-              Add Plan
+              Add User
             </Button>
           </div>
         )}
@@ -64,19 +63,19 @@ export default function PlanView() {
       {
         <>
           {dialog.action === "create" && (
-            <CreatePlanDialog open onClose={closeDialog} />
+            <CreateUserDialog open onClose={closeDialog} />
           )}
           {dialog.action === "edit" && dialog.id != null && (
-            <UpdatePlanDialog
+            <UpdateUserDialog
               open={dialog.open}
-              planId={dialog.id}
+              userId={dialog.id}
               onClose={closeDialog}
             />
           )}
           {dialog.action === "delete" && dialog.id != null && (
-            <DeletePlanDialog
+            <DeleteUserDialog
               open={dialog.open}
-              planId={dialog.id}
+              userId={dialog.id}
               onClose={closeDialog}
             />
           )}

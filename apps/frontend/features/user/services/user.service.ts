@@ -24,12 +24,18 @@ export const create = async (data: CreateUserRequest) => {
   return res.data;
 };
 
-export const update = async (id: number, data: UpdateUserRequest) => {
+export const update = async ({
+  id,
+  data,
+}: {
+  id: number;
+  data: UpdateUserRequest;
+}) => {
   const res = await api.put<ApiResponse<void>>(`/user/${id}`, data);
   return res.data;
 };
 
-export const remove = async (id: number) => {
+export const remove = async ({ id }: { id: number }) => {
   const res = await api.delete<ApiResponse<void>>(`/user/${id}`);
   return res.data;
 };
@@ -58,7 +64,7 @@ export const resetPassword = async ({
   data: ResetPasswordRequest;
 }) => {
   const res = await api.put<ApiResponse<void>>(
-    `/users/${id}/reset-password`,
+    `/user/${id}/reset-password`,
     data,
   );
   return res.data;

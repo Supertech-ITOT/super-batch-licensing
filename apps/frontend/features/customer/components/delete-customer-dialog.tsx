@@ -35,7 +35,7 @@ export default function DeleteCustomerDialog({
       loading={loading}
       icon={Users}
       dialogVariant="destructive"
-      title="Delete User"
+      title="Delete Customer"
       description={`Are you sure you want to delete "${customer?.companyName ?? "-"}"? This action cannot be undone.`}
       confirmText="Delete"
     />
