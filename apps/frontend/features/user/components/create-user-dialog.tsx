@@ -117,6 +117,32 @@ export default function CreateUserDialog({ open, onClose }: Props) {
             )}
           </Button>
         </div>
+
+        <div className="relative">
+          <TextInput
+            label="Confirm Password"
+            icon={Lock}
+            type={showPassword ? "text" : "password"}
+            maxLength={UserSchemaLimit.password.max}
+            placeholder="Confirm password"
+            disabled={loading}
+            {...register("confirmPassword")}
+          />
+
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="absolute right-2 top-7"
+            onClick={() => setShowPassword((prev) => !prev)}
+          >
+            {showPassword ? (
+              <EyeOff className="h-4 w-4" />
+            ) : (
+              <Eye className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
       </form>
     </FormDialog>
   );

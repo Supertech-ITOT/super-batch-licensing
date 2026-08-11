@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { UpdateLicenseRequest } from "../types/license.types";
 import { queryKeys } from "../../common/query-keys";
 import {
   create,
   getAll,
   getById,
+  getLicenseTypes,
   remove,
   update,
 } from "../service/license.service";
@@ -47,8 +47,7 @@ export const useUpdateLicense = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: UpdateLicenseRequest }) =>
-      update(id, data),
+    mutationFn: update,
 
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -67,6 +66,16 @@ export const useDeleteLicense = () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.licenses,
       });
+    },
+  });
+};
+
+export const useGetLicenseTypes = () => {
+  return useQuery({
+    queryKey: ["license-types"],
+    queryFn: async () => {
+      const res = await getLicenseTypes();
+      return res.data;
     },
   });
 };

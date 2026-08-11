@@ -10,7 +10,6 @@ import {
   resetPassword,
   update,
 } from "../services/user.service";
-import { UpdateUserRequest } from "../types/user.types";
 
 export const useGetAllUsers = () => {
   return useQuery({

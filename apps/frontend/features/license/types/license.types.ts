@@ -28,13 +28,13 @@ export interface LicenseResponse {
 export interface CreateLicenseRequest {
   customerId: number;
   planId: number;
-  type: LicenseType;
+  type: string;
   expiryDate: string;
   machineFingerprint?: string;
 }
 
 export interface UpdateLicenseRequest {
-  status: LicenseStatus;
+  status: string;
   expiryDate: string;
   machineFingerprint?: string;
 }

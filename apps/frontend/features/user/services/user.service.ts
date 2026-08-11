@@ -42,7 +42,7 @@ export const remove = async ({ id }: { id: number }) => {
 
 export const changePassword = async (data: ChangePasswordRequest) => {
   const res = await api.put<ApiResponse<void>>(
-    "/users/me/change-password",
+    "/user/me/change-password",
     data,
   );
   return res.data;
@@ -50,7 +50,7 @@ export const changePassword = async (data: ChangePasswordRequest) => {
 
 export const resetFirstPassword = async (data: ResetFirstPasswordRequest) => {
   const res = await api.put<ApiResponse<void>>(
-    "/users/me/reset-first-password",
+    "/user/me/reset-first-password",
     data,
   );
   return res.data;

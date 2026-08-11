@@ -32,8 +32,8 @@ export default function ResetFirstPasswordForm() {
   const onSubmit = async (data: ResetFirstPasswordSchema) => {
     try {
       const res = await mutateAsync(data);
-      toast.success(res.message ?? "Login Successfully");
-      router.replace("/PlantModel");
+      toast.success(res.message ?? "Reset password successfully.");
+      router.replace("/customers");
     } catch (error) {
       showApiError(error);
     }

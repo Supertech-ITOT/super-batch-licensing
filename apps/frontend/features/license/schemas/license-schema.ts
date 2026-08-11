@@ -6,17 +6,23 @@ export const licenseSchema = z.object({
     .number({
       error: "Customer is required",
     })
-    .positive(),
+    .positive("Customer is required"),
 
   planId: z
     .number({
       error: "Plan is required",
     })
-    .positive(),
+    .positive("Plan is required"),
 
-  type: z.enum(LicenseType),
+  type: z
+    .string({ error: "License Type is required." })
+    .min(1, "License Type is required")
+    .trim(),
 
-  status: z.enum(LicenseStatus),
+  status: z
+    .string({ error: "License Status is required." })
+    .min(1, "License Status is required")
+    .trim(),
 
   expiryDate: z.string().min(1, "Expiry date is required"),
 
@@ -38,3 +44,11 @@ export type LicenseSchema = z.infer<typeof licenseSchema>;
 export type CreateLicenseSchema = z.infer<typeof createLicenseSchema>;
 
 export type UpdateLicenseSchema = z.infer<typeof updateLicenseSchema>;
+
+export const licenseDefaultValues: CreateLicenseSchema = {
+  customerId: 0,
+  planId: 0,
+  type: "",
+  expiryDate: "",
+  machineFingerprint: "",
+};

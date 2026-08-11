@@ -3,6 +3,7 @@ package com.supertech.backend.license.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,14 +23,16 @@ import com.supertech.backend.license.service.LicenseService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/license")
+@RequestMapping("/api/licenses")
 @RequiredArgsConstructor
 public class LicenseController {
     private final LicenseService licenseService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> create(@Validated @RequestBody CreateLicenseRequest request) {
-        licenseService.create(request, null);
+    public ResponseEntity<ApiResponse<Void>> create(@Validated @RequestBody CreateLicenseRequest request,
+            Authentication authentication) {
+        Long userId = Long.valueOf(authentication.getName());
+        licenseService.create(request, userId);
         return ResponseEntity.ok(ApiResponse.success("License created successfully", null));
     }
 

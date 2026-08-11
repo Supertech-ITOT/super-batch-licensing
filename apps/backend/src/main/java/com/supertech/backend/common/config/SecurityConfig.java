@@ -33,7 +33,8 @@ public class SecurityConfig {
                                                 .requestMatchers("/api/customers/**").permitAll()
                                                 .requestMatchers("/api/user/**").permitAll()
                                                 .requestMatchers("/api/plans/**").permitAll()
-                                                .requestMatchers("/api/license/**").permitAll()
+                                                .requestMatchers("/api/licenses/**").permitAll()
+                                                .requestMatchers("/api/metadata/**").permitAll()
                                                 .anyRequest().authenticated())
                                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                                 .build();

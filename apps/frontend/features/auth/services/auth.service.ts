@@ -9,3 +9,8 @@ export const login = async (request: LoginRequest) => {
   );
   return res.data;
 };
+
+export const logout = async () => {
+  const res = await api.post<ApiResponse<null>>("/auth/logout");
+  return res.data;
+};

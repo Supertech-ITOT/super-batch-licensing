@@ -27,18 +27,34 @@ export const userSchema = z.object({
     ),
 });
 
-export const createUserSchema = userSchema.extend({
-  password: z
-    .string()
-    .min(
-      UserSchemaLimit.password.min,
-      `Password must be at least ${UserSchemaLimit.password.min} characters`,
-    )
-    .max(
-      UserSchemaLimit.password.max,
-      `Password cannot exceed ${UserSchemaLimit.password.max} characters`,
-    ),
-});
+export const createUserSchema = userSchema
+  .extend({
+    password: z
+      .string()
+      .min(
+        UserSchemaLimit.password.min,
+        `Password must be at least ${UserSchemaLimit.password.min} characters`,
+      )
+      .max(
+        UserSchemaLimit.password.max,
+        `Password cannot exceed ${UserSchemaLimit.password.max} characters`,
+      ),
+
+    confirmPassword: z
+      .string()
+      .min(
+        UserSchemaLimit.password.min,
+        `Confirm password must be at least ${UserSchemaLimit.password.min} characters`,
+      )
+      .max(
+        UserSchemaLimit.password.max,
+        `Confirm password cannot exceed ${UserSchemaLimit.password.max} characters`,
+      ),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 export const updateUserSchema = userSchema;
 
@@ -99,6 +115,7 @@ export const userDefaultValues: CreateUserSchema = {
   name: "",
   email: "",
   password: "",
+  confirmPassword: "",
 };
 
 export const updateUserDefaultValues: UpdateUserSchema = {

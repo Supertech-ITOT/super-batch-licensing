@@ -7,7 +7,6 @@ import com.supertech.backend.user.dto.CreateUserRequest;
 import com.supertech.backend.user.dto.UpdateUserRequest;
 import com.supertech.backend.user.dto.UserResponse;
 import com.supertech.backend.user.entity.Users;
-import com.supertech.backend.user.enums.UserStatus;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +20,7 @@ public class UserMapper {
                 .name(request.name())
                 .email(request.email())
                 .password(passwordEncoder.encode(request.password()))
-                .status(UserStatus.ACTIVE)
+                .passwordChangeRequired(true)
                 .build();
     }
 
@@ -29,7 +28,6 @@ public class UserMapper {
 
         user.setName(request.name());
         user.setEmail(request.email());
-        user.setStatus(request.status());
     }
 
     public UserResponse toResponse(Users user) {
@@ -38,7 +36,6 @@ public class UserMapper {
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
-                .status(user.getStatus())
                 .lastLogin(user.getLastLogin())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())

@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.supertech.backend.user.enums.UserStatus;
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,10 +23,6 @@ public class Users {
     private String name;
     private String email;
     private String password;
-    private boolean isAdmin;
-
-    @Enumerated(EnumType.STRING)
-    private UserStatus status;
 
     private LocalDateTime lastLogin;
 
@@ -37,5 +31,17 @@ public class Users {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean systemAccount = false;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean passwordChangeRequired = false;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean deleted = false;
 
 }

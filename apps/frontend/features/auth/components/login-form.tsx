@@ -38,7 +38,7 @@ export default function LoginForm() {
         router.replace("/reset-first-password");
         return;
       }
-      router.replace("/PlantModel");
+      router.replace("/customers");
     } catch (error) {
       showApiError(error);
     }

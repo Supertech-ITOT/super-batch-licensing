@@ -1,7 +1,7 @@
 import React from "react";
 import ModuleHeader from "../../../common/components/module-header";
 
-export default function CustomerLayout({
+export default function UserLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
