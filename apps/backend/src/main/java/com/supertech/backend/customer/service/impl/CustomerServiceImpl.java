@@ -68,4 +68,21 @@ public class CustomerServiceImpl implements CustomerService {
         return customerMapper.toResponse(customer);
     }
 
+    @Override
+    public Customers findOrCreate(String email, String name, String companyName) {
+        return customerRepository.findByEmail(email)
+                .orElseGet(() -> customerRepository.save(
+                        Customers.builder()
+                                .companyName(companyName)
+                                .email(email)
+                                .name(name)
+                                .build()));
+    }
+
+    @Override
+    public Customers getByIdEntity(Long id) {
+        return customerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+    }
+
 }

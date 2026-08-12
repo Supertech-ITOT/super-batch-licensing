@@ -1,4 +1,4 @@
-package com.supertech.backend.customer.entity;
+package com.supertech.backend.product.entity;
 
 import java.time.LocalDateTime;
 
@@ -11,23 +11,24 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
+public class Products {
 
-public class Customers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-    private String companyName;
-    private String email;
+
+    private String code;
+
+    private String description;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-
 }

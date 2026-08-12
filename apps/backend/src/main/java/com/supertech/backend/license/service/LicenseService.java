@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.supertech.backend.license.dto.CreateLicenseRequest;
 import com.supertech.backend.license.dto.LicenseResponse;
+import com.supertech.backend.license.dto.TrialLicenseRequest;
+import com.supertech.backend.license.dto.TrialLicenseResponse;
 import com.supertech.backend.license.dto.UpadteLicenseRequest;
 
 public interface LicenseService {
@@ -16,4 +18,7 @@ public interface LicenseService {
     List<LicenseResponse> getAll();
 
     LicenseResponse getById(Long id);
+
+    TrialLicenseResponse getTrialLicense(TrialLicenseRequest request);
+
 }

@@ -2,6 +2,7 @@ package com.supertech.backend.license.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -10,6 +11,7 @@ import com.supertech.backend.customer.entity.Customers;
 import com.supertech.backend.license.enums.LicenseStatus;
 import com.supertech.backend.license.enums.LicenseType;
 import com.supertech.backend.plan.entity.Plans;
+import com.supertech.backend.product.entity.Products;
 import com.supertech.backend.user.entity.Users;
 
 import jakarta.persistence.*;
@@ -28,6 +30,7 @@ public class License {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String licenseNumber;
     private String licenseKey;
 
@@ -36,6 +39,10 @@ public class License {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Plans plans;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "license_products", joinColumns = @JoinColumn(name = "license_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private Set<Products> products;
 
     @Enumerated(EnumType.STRING)
     private LicenseType type;

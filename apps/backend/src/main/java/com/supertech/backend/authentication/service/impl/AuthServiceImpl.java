@@ -1,6 +1,5 @@
 package com.supertech.backend.authentication.service.impl;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.security.crypto.password.PasswordEncoder;

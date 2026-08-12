@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.supertech.backend.common.dto.ApiResponse;
 import com.supertech.backend.license.dto.CreateLicenseRequest;
 import com.supertech.backend.license.dto.LicenseResponse;
+import com.supertech.backend.license.dto.TrialLicenseRequest;
+import com.supertech.backend.license.dto.TrialLicenseResponse;
 import com.supertech.backend.license.dto.UpadteLicenseRequest;
 import com.supertech.backend.license.service.LicenseService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -58,6 +61,14 @@ public class LicenseController {
     @GetMapping()
     public ResponseEntity<ApiResponse<List<LicenseResponse>>> getAll() {
         return ResponseEntity.ok(ApiResponse.success("License fetched successfully", licenseService.getAll()));
+    }
+
+    @PostMapping("/trial")
+    public ResponseEntity<ApiResponse<TrialLicenseResponse>> createTrial(
+            @Valid @RequestBody TrialLicenseRequest request) {
+
+        TrialLicenseResponse res = licenseService.getTrialLicense(request);
+        return ResponseEntity.ok(ApiResponse.success("Trial License created successfully", res));
     }
 
 }

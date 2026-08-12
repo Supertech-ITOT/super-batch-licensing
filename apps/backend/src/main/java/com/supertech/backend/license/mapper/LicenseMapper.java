@@ -2,16 +2,19 @@ package com.supertech.backend.license.mapper;
 
 import java.time.LocalDate;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
 import com.supertech.backend.customer.entity.Customers;
 import com.supertech.backend.license.dto.CreateLicenseRequest;
 import com.supertech.backend.license.dto.LicenseResponse;
+import com.supertech.backend.license.dto.TrialLicenseResponse;
 import com.supertech.backend.license.dto.UpadteLicenseRequest;
 import com.supertech.backend.license.entity.License;
 import com.supertech.backend.license.enums.LicenseStatus;
 import com.supertech.backend.plan.entity.Plans;
+import com.supertech.backend.product.entity.Products;
 import com.supertech.backend.user.entity.Users;
 
 @Component
@@ -74,6 +77,27 @@ public class LicenseMapper {
 
     private String generateLicenseNumber() {
         return "LIC-" + System.currentTimeMillis();
+    }
+
+    public TrialLicenseResponse toTrialResponse(
+            License license,
+            byte[] licenseFile) {
+
+        return new TrialLicenseResponse(
+                license.getLicenseNumber(),
+                license.getLicenseKey(),
+                license.getType(),
+                license.getStatus(),
+                license.getIssueDate(),
+                license.getActivationDate(),
+                license.getExpiryDate(),
+                license.getMachineFingerprint(),
+                license.getLicenseFileName(),
+                license.getProducts()
+                        .stream()
+                        .map(Products::getId)
+                        .collect(Collectors.toSet()),
+                licenseFile);
     }
 
 }

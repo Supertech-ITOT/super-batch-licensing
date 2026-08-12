@@ -50,3 +50,6 @@ failsafe-reports/
 
 # Generated files
 dependency-reduced-pom.xml
+
+# license
+src/main/resources/application.properties
