@@ -14,25 +14,25 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class LicenseValidationServiceImpl
-        implements LicenseValidationService {
+                implements LicenseValidationService {
 
-    private final LicenseRepository licenseRepository;
+        private final LicenseRepository licenseRepository;
 
-    @Override
-    public void validateTrial(
-            Customers customer,
-            Products product) {
+        @Override
+        public void validateTrial(
+                        Customers customer,
+                        Products product) {
 
-        boolean trialExists = licenseRepository
-                .existsByCustomers_IdAndTypeAndProducts_Id(
-                        customer.getId(),
-                        LicenseType.TRIAL,
-                        product.getId());
+                boolean trialExists = licenseRepository
+                                .existsByCustomers_IdAndTypeAndProductId(
+                                                customer.getId(),
+                                                LicenseType.TRIAL,
+                                                product.getId());
 
-        if (trialExists) {
-            throw new DuplicateResourceException(
-                    "Trial already exists for product: "
-                            + product.getName());
+                if (trialExists) {
+                        throw new DuplicateResourceException(
+                                        "Trial already exists for product: "
+                                                        + product.getName());
+                }
         }
-    }
 }

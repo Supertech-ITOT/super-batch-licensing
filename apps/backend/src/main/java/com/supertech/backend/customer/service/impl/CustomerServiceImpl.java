@@ -79,10 +79,4 @@ public class CustomerServiceImpl implements CustomerService {
                                 .build()));
     }
 
-    @Override
-    public Customers getByIdEntity(Long id) {
-        return customerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-    }
-
 }

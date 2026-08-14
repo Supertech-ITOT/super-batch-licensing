@@ -40,9 +40,8 @@ public class License {
     @ManyToOne(fetch = FetchType.LAZY)
     private Plans plans;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "license_products", joinColumns = @JoinColumn(name = "license_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Products> products;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Products product;
 
     @Enumerated(EnumType.STRING)
     private LicenseType type;

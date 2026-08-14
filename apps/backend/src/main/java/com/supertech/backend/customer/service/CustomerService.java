@@ -23,5 +23,4 @@ public interface CustomerService {
             String name,
             String companyName);
 
-    Customers getByIdEntity(Long id);
 }

@@ -1,11 +1,11 @@
 package com.supertech.backend.license.service.impl;
 
 import java.util.List;
-import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.supertech.backend.common.exception.ResourceNotFoundException;
 import com.supertech.backend.customer.entity.Customers;
+import com.supertech.backend.customer.repository.CustomerRepository;
 import com.supertech.backend.customer.service.CustomerService;
 import com.supertech.backend.license.dto.CreateLicenseRequest;
 import com.supertech.backend.license.dto.LicenseResponse;
@@ -23,7 +23,7 @@ import com.supertech.backend.license.validation.LicenseValidationService;
 import com.supertech.backend.plan.entity.Plans;
 import com.supertech.backend.plan.repository.PlanRepository;
 import com.supertech.backend.product.entity.Products;
-import com.supertech.backend.product.service.ProductService;
+import com.supertech.backend.product.repository.ProductRepository;
 import com.supertech.backend.user.entity.Users;
 import com.supertech.backend.user.repository.UserRepository;
 
@@ -31,23 +31,28 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class LicenseServiceImpl implements LicenseService {
 
         private final LicenseMapper licenseMapper;
         private final LicenseRepository licenseRepository;
-        private final CustomerService customerService;
+        private final CustomerRepository customerRepository;
         private final PlanRepository planRepository;
         private final UserRepository userRepository;
         private final LicenseSigningService licenseSigningService;
         private final LicenseFileService licenseFileService;
-        private final ProductService productService;
         private final LicenseValidationService licenseValidationService;
         private final LicenseFactory licenseFactory;
+        private final ProductRepository productRepository;
+        private final CustomerService customerService;
 
         @Override
+        @Transactional
         public void create(CreateLicenseRequest request, Long createdById) {
-                Customers customer = customerService.getByIdEntity(request.customerId());
+                Customers customer = customerRepository.findById(request.customerId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+                Products products = productRepository.findById(request.productId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
                 Plans plan = planRepository.findById(request.planId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Plan not found"));
@@ -55,11 +60,12 @@ public class LicenseServiceImpl implements LicenseService {
                 Users createdBy = userRepository.findById(createdById)
                                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-                License license = licenseMapper.toEntity(request, customer, createdBy, plan);
+                License license = licenseMapper.toEntity(request, customer, products, createdBy, plan);
                 licenseRepository.save(license);
         }
 
         @Override
+        @Transactional
         public void update(UpadteLicenseRequest request, Long id) {
                 License license = licenseRepository.findById(id)
                                 .orElseThrow(() -> new ResourceNotFoundException("License not found."));
@@ -69,6 +75,7 @@ public class LicenseServiceImpl implements LicenseService {
         }
 
         @Override
+        @Transactional
         public void delete(Long id) {
                 License license = licenseRepository.findById(id)
                                 .orElseThrow(() -> new ResourceNotFoundException("License not found"));
@@ -96,14 +103,14 @@ public class LicenseServiceImpl implements LicenseService {
                                 request.name(),
                                 request.companyName());
 
-                Set<Products> products = productService.getByIds(request.productIds());
+                Products product = productRepository.findById(request.productId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
-                products.forEach(product -> licenseValidationService.validateTrial(
-                                customer,
-                                product));
+                licenseValidationService.validateTrial(customer, product);
+
                 License license = licenseFactory.createTrialLicense(
                                 customer,
-                                products,
+                                product,
                                 request.machineFingerprint());
 
                 String signature = licenseSigningService.generateSignature(license);
@@ -113,9 +120,7 @@ public class LicenseServiceImpl implements LicenseService {
                 License savedLicense = licenseRepository.save(license);
 
                 byte[] licenseFile = licenseFileService.generateLicenseFile(savedLicense);
-                return licenseMapper.toTrialResponse(
-                                savedLicense,
-                                licenseFile);
+                return licenseMapper.toTrialResponse(savedLicense, licenseFile);
 
         }
 

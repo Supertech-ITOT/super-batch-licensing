@@ -2,7 +2,6 @@ package com.supertech.backend.license.mapper;
 
 import java.time.LocalDate;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -19,21 +18,19 @@ import com.supertech.backend.user.entity.Users;
 
 @Component
 public class LicenseMapper {
-    public License toEntity(CreateLicenseRequest request, Customers customer, Users createdBy, Plans plan) {
+    public License toEntity(CreateLicenseRequest request, Customers customer, Products products, Users createdBy,
+            Plans plan) {
         return License.builder()
                 .licenseNumber(generateLicenseNumber())
                 .licenseKey(UUID.randomUUID().toString())
-
+                .product(products)
                 .customers(customer)
                 .plans(plan)
-
                 .type(request.type())
                 .status(LicenseStatus.ACTIVE)
-
                 .issueDate(LocalDate.now())
                 .expiryDate(request.expiryDate())
                 .machineFingerprint(request.machineFingerprint())
-
                 .createdBy(createdBy)
                 .build();
 
@@ -93,10 +90,7 @@ public class LicenseMapper {
                 license.getExpiryDate(),
                 license.getMachineFingerprint(),
                 license.getLicenseFileName(),
-                license.getProducts()
-                        .stream()
-                        .map(Products::getId)
-                        .collect(Collectors.toSet()),
+                license.getProduct().getId(),
                 licenseFile);
     }
 

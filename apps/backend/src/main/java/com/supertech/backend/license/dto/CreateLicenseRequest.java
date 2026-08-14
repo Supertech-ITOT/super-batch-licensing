@@ -11,15 +11,16 @@ import lombok.Builder;
 @Builder
 public record CreateLicenseRequest(
 
-        @NotNull(message = "Customer is required") Long customerId,
+                @NotNull(message = "Customer is required") Long customerId,
+                @NotNull(message = "Product is required") Long productId,
 
-        @NotNull(message = "License plan is required") Long planId,
+                @NotNull(message = "License plan is required") Long planId,
 
-        @NotNull(message = "License type is required") LicenseType type,
+                @NotNull(message = "License type is required") LicenseType type,
 
-        @NotNull(message = "Expiry date is required") @Future(message = "Expiry date must be in the future") LocalDate expiryDate,
+                @NotNull(message = "Expiry date is required") @Future(message = "Expiry date must be in the future") LocalDate expiryDate,
 
-        String machineFingerprint
+                String machineFingerprint
 
 ) {
 

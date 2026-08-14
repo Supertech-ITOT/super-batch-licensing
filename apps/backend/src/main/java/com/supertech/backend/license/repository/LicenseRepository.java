@@ -6,7 +6,7 @@ import com.supertech.backend.license.entity.License;
 import com.supertech.backend.license.enums.LicenseType;
 
 public interface LicenseRepository extends JpaRepository<License, Long> {
-    boolean existsByCustomers_IdAndTypeAndProducts_Id(
+    boolean existsByCustomers_IdAndTypeAndProductId(
             Long customerId,
             LicenseType type,
             Long productId);

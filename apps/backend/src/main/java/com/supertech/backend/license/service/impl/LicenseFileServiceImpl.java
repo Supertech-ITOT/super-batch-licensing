@@ -1,12 +1,10 @@
 package com.supertech.backend.license.service.impl;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supertech.backend.common.exception.BadRequestException;
+import com.supertech.backend.license.dto.LicenseFileContent;
 import com.supertech.backend.license.entity.License;
 import com.supertech.backend.license.service.LicenseFileService;
 
@@ -20,32 +18,25 @@ public class LicenseFileServiceImpl implements LicenseFileService {
 
         @Override
         public byte[] generateLicenseFile(License license) {
-
                 try {
-
-                        LicenseFileContent content = new LicenseFileContent(
-                                        license.getLicenseNumber(),
-                                        license.getLicenseKey(),
-                                        license.getType(),
-                                        license.getStatus(),
-                                        license.getIssueDate(),
-                                        license.getActivationDate(),
-                                        license.getExpiryDate(),
-                                        license.getMachineFingerprint(),
-                                        license.getSignature(),
-                                        license.getCustomers() != null
+                        LicenseFileContent content = LicenseFileContent.builder()
+                                        .licenseNumber(license.getLicenseNumber())
+                                        .licenseKey(license.getLicenseKey())
+                                        .type(license.getType())
+                                        .status(license.getStatus())
+                                        .issueDate(license.getIssueDate())
+                                        .activationDate(license.getActivationDate())
+                                        .expiryDate(license.getExpiryDate())
+                                        .machineFingerprint(license.getMachineFingerprint())
+                                        .signature(license.getSignature())
+                                        .customerId(license.getCustomers() != null
                                                         ? license.getCustomers().getId()
-                                                        : null,
-                                        license.getPlans() != null
+                                                        : null)
+                                        .planId(license.getPlans() != null
                                                         ? license.getPlans().getId()
-                                                        : null,
-                                        license.getProducts() != null
-                                                        ? license.getProducts()
-                                                                        .stream()
-                                                                        .map(product -> product.getId())
-                                                                        .sorted()
-                                                                        .toList()
-                                                        : List.of());
+                                                        : null)
+                                        .productId(license.getProduct() != null ? license.getProduct().getId() : null)
+                                        .build();
 
                         return objectMapper
                                         .writerWithDefaultPrettyPrinter()
@@ -53,23 +44,8 @@ public class LicenseFileServiceImpl implements LicenseFileService {
                                         .getBytes(StandardCharsets.UTF_8);
 
                 } catch (Exception e) {
-                        throw new BadRequestException(
-                                        "Failed to generate license file");
+                        throw new BadRequestException("Failed to generate license file");
                 }
         }
 
-        private record LicenseFileContent(
-                        String licenseNumber,
-                        String licenseKey,
-                        Object type,
-                        Object status,
-                        Object issueDate,
-                        Object activationDate,
-                        Object expiryDate,
-                        String machineFingerprint,
-                        String signature,
-                        Long customerId,
-                        Long planId,
-                        List<Long> productIds) {
-        }
 }
