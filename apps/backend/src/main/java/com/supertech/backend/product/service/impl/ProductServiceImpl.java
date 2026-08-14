@@ -29,4 +29,9 @@ public class ProductServiceImpl implements ProductService {
                                 "Product not found: " + productId)))
                 .collect(Collectors.toSet());
     }
+
+    @Override
+    public void create(Products product) {
+        productRepository.save(product);
+    }
 }
