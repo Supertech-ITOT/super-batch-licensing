@@ -20,8 +20,9 @@ import com.supertech.backend.user.entity.Users;
 public class LicenseMapper {
     public License toEntity(CreateLicenseRequest request, Customers customer, Products products, Users createdBy,
             Plans plan) {
+        String licenseNumber = generateLicenseNumber();
         return License.builder()
-                .licenseNumber(generateLicenseNumber())
+                .licenseNumber(licenseNumber)
                 .licenseKey(UUID.randomUUID().toString())
                 .product(products)
                 .customers(customer)
@@ -31,6 +32,7 @@ public class LicenseMapper {
                 .issueDate(LocalDate.now())
                 .expiryDate(request.expiryDate())
                 .machineFingerprint(request.machineFingerprint())
+                .licenseFileName(licenseNumber + ".lic")
                 .createdBy(createdBy)
                 .build();
 
@@ -73,7 +75,10 @@ public class LicenseMapper {
     }
 
     private String generateLicenseNumber() {
-        return "LIC-" + System.currentTimeMillis();
+        return "LIC-" + UUID.randomUUID()
+                .toString()
+                .substring(0, 8)
+                .toUpperCase();
     }
 
     public TrialLicenseResponse toTrialResponse(

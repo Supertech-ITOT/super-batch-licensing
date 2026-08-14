@@ -21,4 +21,11 @@ public interface LicenseService {
 
     TrialLicenseResponse getTrialLicense(TrialLicenseRequest request);
 
-}
+    byte[] downloadLicenseKey(Long licenseId);
+
+    byte[] downloadLicenseFile(Long licenseId);
+
+    void sendLicenseKey(Long licenseId);
+
+    void sendLicenseFile(Long licenseId);
+};

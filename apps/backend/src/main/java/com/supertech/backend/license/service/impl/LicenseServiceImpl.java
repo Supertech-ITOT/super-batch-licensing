@@ -1,8 +1,16 @@
 package com.supertech.backend.license.service.impl;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.supertech.backend.common.exception.BadRequestException;
 import com.supertech.backend.common.exception.ResourceNotFoundException;
 import com.supertech.backend.customer.entity.Customers;
 import com.supertech.backend.customer.repository.CustomerRepository;
@@ -27,6 +35,8 @@ import com.supertech.backend.product.repository.ProductRepository;
 import com.supertech.backend.user.entity.Users;
 import com.supertech.backend.user.repository.UserRepository;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -45,6 +55,7 @@ public class LicenseServiceImpl implements LicenseService {
         private final LicenseFactory licenseFactory;
         private final ProductRepository productRepository;
         private final CustomerService customerService;
+        private final JavaMailSender mailSender;
 
         @Override
         @Transactional
@@ -53,14 +64,13 @@ public class LicenseServiceImpl implements LicenseService {
                                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
                 Products products = productRepository.findById(request.productId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-
                 Plans plan = planRepository.findById(request.planId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Plan not found"));
-
                 Users createdBy = userRepository.findById(createdById)
                                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
                 License license = licenseMapper.toEntity(request, customer, products, createdBy, plan);
+                String signature = licenseSigningService.generateSignature(license);
+                license.setSignature(signature);
                 licenseRepository.save(license);
         }
 
@@ -124,4 +134,120 @@ public class LicenseServiceImpl implements LicenseService {
 
         }
 
+        @Override
+        public byte[] downloadLicenseKey(Long licenseId) {
+
+                License license = licenseRepository.findById(licenseId)
+                                .orElseThrow(() -> new ResourceNotFoundException("License Not Found"));
+
+                if (license.getLicenseKey() == null || license.getLicenseKey().isBlank()) {
+                        throw new BadRequestException("License key not available");
+                }
+                String content = "License Key: " + license.getLicenseKey();
+                return content.getBytes(StandardCharsets.UTF_8);
+        }
+
+        @Override
+        public byte[] downloadLicenseFile(Long licenseId) {
+
+                License license = licenseRepository.findById(licenseId)
+                                .orElseThrow(() -> new ResourceNotFoundException("License Not Found"));
+
+                return licenseFileService.generateLicenseFile(license);
+        }
+
+        @Override
+        public void sendLicenseKey(Long licenseId) {
+                License license = licenseRepository.findById(licenseId)
+                                .orElseThrow(() -> new ResourceNotFoundException("License Not Found"));
+                Customers customers = license.getCustomers();
+
+                if (customers == null || customers.getEmail() == null || customers.getEmail().isBlank()) {
+                        throw new BadRequestException("Customer email not available");
+                }
+
+                if (license.getLicenseKey() == null || license.getLicenseKey().isBlank()) {
+                        throw new BadRequestException("License key not available");
+                }
+
+                SimpleMailMessage message = new SimpleMailMessage();
+
+                message.setTo(customers.getEmail());
+                message.setSubject("Your Superbatch License Key");
+                message.setText("""
+                                Hello %s,
+
+                                Your SuperBatch license has been created successfully.
+
+                                License Number: %s
+                                License Key: %s
+
+                                Please use this license key to activate your SuperBatch software.
+
+                                Regards,
+                                SuperBatch Licensing Team
+                                """.formatted(
+                                customers.getName(),
+                                license.getLicenseNumber(),
+                                license.getLicenseKey()));
+                mailSender.send(message);
+        }
+
+        @Override
+        public void sendLicenseFile(Long licenseId) {
+
+                License license = licenseRepository.findById(licenseId)
+                                .orElseThrow(() -> new ResourceNotFoundException("License Not Found"));
+
+                Customers customer = license.getCustomers();
+
+                if (customer == null || customer.getEmail() == null || customer.getEmail().isBlank()) {
+                        throw new BadRequestException("Customer email not available");
+                }
+
+                byte[] licenseFile = licenseFileService.generateLicenseFile(license);
+
+                String fileName = license.getLicenseFileName();
+
+                if (fileName == null || fileName.isBlank()) {
+                        fileName = "superbatch-license.lic";
+                }
+
+                try {
+                        MimeMessage mimeMessage = mailSender.createMimeMessage();
+
+                        MimeMessageHelper helper = new MimeMessageHelper(
+                                        mimeMessage,
+                                        true,
+                                        StandardCharsets.UTF_8.name());
+
+                        helper.setTo(customer.getEmail());
+                        helper.setSubject("Your SuperBatch License File");
+
+                        helper.setText("""
+                                        Hello %s,
+
+                                        Your SuperBatch license has been created successfully.
+
+                                        License Number: %s
+
+                                        Please find your license file attached to this email.
+
+                                        Regards,
+                                        SuperBatch Licensing Team
+                                        """.formatted(
+                                        customer.getName(),
+                                        license.getLicenseNumber()));
+
+                        helper.addAttachment(
+                                        fileName,
+                                        new ByteArrayResource(licenseFile));
+
+                        mailSender.send(mimeMessage);
+
+                } catch (MessagingException e) {
+                        throw new IllegalStateException(
+                                        "Failed to send license file email", e);
+                }
+        }
 }

@@ -2,6 +2,8 @@ package com.supertech.backend.license.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -69,6 +71,44 @@ public class LicenseController {
 
         TrialLicenseResponse res = licenseService.getTrialLicense(request);
         return ResponseEntity.ok(ApiResponse.success("Trial License created successfully", res));
+    }
+
+    @GetMapping("/{id}/download-key")
+    public ResponseEntity<byte[]> downloadLicenseKey(@PathVariable Long id) {
+
+        byte[] file = licenseService.downloadLicenseKey(id);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"license-key.txt\"")
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(file);
+    }
+
+    @GetMapping("/{id}/download-file")
+    public ResponseEntity<byte[]> downloadLicenseFile(@PathVariable Long id) {
+
+        byte[] file = licenseService.downloadLicenseFile(id);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"license.lic\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(file);
+    }
+
+    @PostMapping("/{id}/send-key")
+    public ResponseEntity<String> sendLicenseKey(@PathVariable Long id) {
+
+        licenseService.sendLicenseKey(id);
+
+        return ResponseEntity.ok("License key email sent successfully");
+    }
+
+    @PostMapping("/{id}/send-file")
+    public ResponseEntity<String> sendLicenseFile(@PathVariable Long id) {
+
+        licenseService.sendLicenseFile(id);
+
+        return ResponseEntity.ok("License file email sent successfully");
     }
 
 }

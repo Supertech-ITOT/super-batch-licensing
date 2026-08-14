@@ -2,18 +2,14 @@ package com.supertech.backend.license.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import com.supertech.backend.customer.entity.Customers;
 import com.supertech.backend.license.enums.LicenseStatus;
 import com.supertech.backend.license.enums.LicenseType;
 import com.supertech.backend.plan.entity.Plans;
 import com.supertech.backend.product.entity.Products;
 import com.supertech.backend.user.entity.Users;
-
 import jakarta.persistence.*;
 import lombok.*;
 
