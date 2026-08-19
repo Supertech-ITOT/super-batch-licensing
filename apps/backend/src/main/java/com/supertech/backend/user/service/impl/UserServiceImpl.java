@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.supertech.backend.common.exception.BadRequestException;
 import com.supertech.backend.common.exception.DuplicateResourceException;
 import com.supertech.backend.common.exception.ResourceNotFoundException;
+import com.supertech.backend.common.exception.UnauthorizedException;
 import com.supertech.backend.user.dto.ChangePasswordRequest;
 import com.supertech.backend.user.dto.CreateUserRequest;
 import com.supertech.backend.user.dto.ResetFirstPasswordRequest;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void create(CreateUserRequest request) {
-        if (userRepository.existsByEmail(request.email())) {
+        if (userRepository.existsByEmail(request.email().toLowerCase())) {
             throw new DuplicateResourceException("Email already exists");
         }
         Users user = userMapper.toEntity(request);
@@ -42,8 +43,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(UpdateUserRequest request, Long id) {
+        String email = request.email().toLowerCase();
         Users user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        if (!user.getEmail().equals(request.email()) && userRepository.existsByEmail(request.email())) {
+        if (!user.getEmail().equals(email) && userRepository.existsByEmail(email)) {
             throw new BadRequestException("Email already exists");
         }
         userMapper.updateEntity(request, user);
@@ -121,6 +123,14 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(request.password()));
         user.setPasswordChangeRequired(true);
         userRepository.save(user);
+    }
+
+    @Override
+    public UserResponse getCurrentUser(Long currentUserId) {
+        Users user = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new UnauthorizedException("TOKEN_EXPIRED"));
+        return userMapper.toResponse(user);
+
     }
 
 }

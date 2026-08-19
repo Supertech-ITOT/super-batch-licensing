@@ -32,8 +32,8 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> update(@Validated @RequestBody @PathVariable Long id,
-            UpdateCustomerRequest request) {
+    public ResponseEntity<ApiResponse<Void>> update(@PathVariable Long id,
+            @Validated @RequestBody UpdateCustomerRequest request) {
         customerService.update(request, id);
         return ResponseEntity.ok(ApiResponse.success("Customer Updated Successfully", null));
 

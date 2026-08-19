@@ -60,6 +60,13 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success("User fetched successfully", userService.getAll()));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<UserResponse>> getCurrentUser() {
+        Long id = userContextService.getCurrentUserId();
+        return ResponseEntity
+                .ok(ApiResponse.success("User fetched successfully", userService.getCurrentUser(id)));
+    }
+
     @PutMapping("/me/change-password")
     public ResponseEntity<ApiResponse<Void>> changePassword(
             @Validated @RequestBody ChangePasswordRequest request) {

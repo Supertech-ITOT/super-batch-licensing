@@ -5,6 +5,8 @@ export interface UserResponse {
   lastLogin: string | null;
   createdAt: string;
   updatedAt: string;
+  systemAccount: boolean;
+  passwordChangedRequired: boolean;
 }
 
 export interface CreateUserRequest {

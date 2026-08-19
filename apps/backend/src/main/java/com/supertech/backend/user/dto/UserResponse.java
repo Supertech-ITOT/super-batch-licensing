@@ -11,7 +11,9 @@ public record UserResponse(
                 String email,
                 LocalDateTime lastLogin,
                 LocalDateTime createdAt,
-                LocalDateTime updatedAt
+                LocalDateTime updatedAt,
+                Boolean systemAccount,
+                Boolean passwordChangedRequired
 
 ) {
 

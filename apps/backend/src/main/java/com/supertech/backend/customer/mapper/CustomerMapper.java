@@ -12,13 +12,13 @@ public class CustomerMapper {
     public Customers toEntity(CreateCustomerRequest request) {
         return Customers.builder()
                 .companyName(request.companyName())
-                .email(request.email())
+                .email(request.email().toLowerCase())
                 .build();
     }
 
     public void updateEntity(UpdateCustomerRequest request, Customers customer) {
         customer.setCompanyName(request.companyName());
-        customer.setEmail(request.email());
+        customer.setEmail(request.email().toLowerCase());
     }
 
     public CustomerResponse toResponse(Customers customer) {

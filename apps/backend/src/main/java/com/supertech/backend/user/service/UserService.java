@@ -16,6 +16,8 @@ public interface UserService {
 
     UserResponse getById(Long id);
 
+    UserResponse getCurrentUser(Long currentUserId);
+
     List<UserResponse> getAll();
 
     void delete(Long id);

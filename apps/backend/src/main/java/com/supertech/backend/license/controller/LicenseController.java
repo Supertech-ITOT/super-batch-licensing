@@ -34,7 +34,7 @@ public class LicenseController {
     private final LicenseService licenseService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> create(@Validated @RequestBody CreateLicenseRequest request,
+    public ResponseEntity<ApiResponse<Void>> create(@Valid @RequestBody CreateLicenseRequest request,
             Authentication authentication) {
         Long userId = Long.valueOf(authentication.getName());
         licenseService.create(request, userId);

@@ -39,6 +39,8 @@ public class UserMapper {
                 .lastLogin(user.getLastLogin())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
+                .systemAccount(user.isSystemAccount())
+                .passwordChangedRequired(user.isPasswordChangeRequired())
                 .build();
     }
 

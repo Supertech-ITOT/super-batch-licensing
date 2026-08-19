@@ -28,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void create(CreateCustomerRequest request) {
-        if (customerRepository.existsByEmail(request.email())) {
+        if (customerRepository.existsByEmail(request.email().toLowerCase())) {
             throw new DuplicateResourceException("Customer email already exists");
         }
 
@@ -38,9 +38,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void update(UpdateCustomerRequest request, Long id) {
+        String email = request.email().toLowerCase();
         Customers customer = customerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-        if (!customer.getEmail().equals(request.email()) && customerRepository.existsByEmail(request.email())) {
+        if (!customer.getEmail().equals(email) && customerRepository.existsByEmail(email)) {
             throw new BadRequestException("Customer email already exists");
         }
 

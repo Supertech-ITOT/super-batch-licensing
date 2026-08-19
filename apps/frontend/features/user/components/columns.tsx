@@ -70,6 +70,21 @@ export const columns = (
       return format(new Date(value), "dd MMM yyyy hh:mm a");
     },
   },
+
+  {
+    id: "passwordChanged",
+    header: "Password Changed",
+    meta: {
+      align: "center",
+    },
+
+    accessorFn: (row) => !row.passwordChangedRequired,
+    cell: ({ getValue }) => {
+      const passwordChanged = getValue<boolean>();
+
+      return passwordChanged ? "Yes" : "No";
+    },
+  },
   {
     id: "action",
     header: "Action",
@@ -100,6 +115,21 @@ export const columns = (
             >
               Edit
             </DropdownMenuItem>
+
+            {/* Reset Password */}
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                setDialog({
+                  action: "reset-password",
+                  id: customer.id,
+                  open: true,
+                });
+              }}
+            >
+              Reset
+            </DropdownMenuItem>
+
             <DropdownMenuSeparator />
 
             <DropdownMenuItem

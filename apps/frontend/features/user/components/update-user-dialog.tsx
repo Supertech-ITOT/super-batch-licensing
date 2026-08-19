@@ -79,7 +79,7 @@ export default function UpdateUserDialog({ open, onClose, userId }: Props) {
       }
       icon={Users}
     >
-      <form onSubmit={handleSubmit(onSubmit, onInvalid)} id="create-user-form">
+      <form onSubmit={handleSubmit(onSubmit, onInvalid)} id="update-user-form">
         <TextInput
           label="Name"
           icon={User}

@@ -11,9 +11,10 @@ import { Plus } from "lucide-react";
 import CreateUserDialog from "./create-user-dialog";
 import UpdateUserDialog from "./update-user-dialog";
 import DeleteUserDialog from "./delete-user-dialog";
+import ResetPasswordDialog from "./reset-password-user-dialog";
 
 export type DialogProp = {
-  action: "create" | "edit" | "delete" | null;
+  action: "create" | "edit" | "delete" | "reset-password" | null;
   id: number | null;
   open: boolean;
 };
@@ -74,6 +75,13 @@ export default function UserView() {
           )}
           {dialog.action === "delete" && dialog.id != null && (
             <DeleteUserDialog
+              open={dialog.open}
+              userId={dialog.id}
+              onClose={closeDialog}
+            />
+          )}
+          {dialog.action === "reset-password" && dialog.id != null && (
+            <ResetPasswordDialog
               open={dialog.open}
               userId={dialog.id}
               onClose={closeDialog}

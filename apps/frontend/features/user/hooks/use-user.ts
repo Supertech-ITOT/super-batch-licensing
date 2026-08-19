@@ -5,6 +5,7 @@ import {
   create,
   getAll,
   getById,
+  getCurrentUser,
   remove,
   resetFirstPassword,
   resetPassword,
@@ -28,6 +29,18 @@ export const useGetUserById = (id?: number) => {
       const res = await getById(id!);
       return res.data;
     },
+  });
+};
+
+export const useGetCurrentUser = (enabled = true) => {
+  return useQuery({
+    queryKey: queryKeys.currentUser,
+    queryFn: async () => {
+      const res = await getCurrentUser();
+      return res.data;
+    },
+    enabled,
+    retry: false,
   });
 };
 

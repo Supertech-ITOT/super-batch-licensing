@@ -1,4 +1,11 @@
-import { Users, UserCog, Package, KeyRound, LucideIcon } from "lucide-react";
+import {
+  Users,
+  UserCog,
+  Package,
+  KeyRound,
+  LucideIcon,
+  Settings,
+} from "lucide-react";
 
 export enum ModuleType {
   CUSTOMERS = "CUSTOMERS",
@@ -56,5 +63,16 @@ export const OperationRoutes: RouteType[] = [
     module: ModuleType.LICENSES,
     description:
       "Generate, activate, suspend, revoke, and monitor software licenses.",
+  },
+];
+
+export const ConfigurationRoutes: RouteType[] = [
+  {
+    label: "Settings",
+    short: "Settings",
+    path: "/Setting",
+    icon: Settings,
+    description:
+      "Configure system preferences, application settings, and defaults.",
   },
 ];

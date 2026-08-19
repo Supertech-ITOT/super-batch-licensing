@@ -19,6 +19,11 @@ export const getById = async (id: number) => {
   return res.data;
 };
 
+export const getCurrentUser = async () => {
+  const res = await api.get<ApiResponse<UserResponse>>(`/user/me`);
+  return res.data;
+};
+
 export const create = async (data: CreateUserRequest) => {
   const res = await api.post<ApiResponse<void>>("/user", data);
   return res.data;

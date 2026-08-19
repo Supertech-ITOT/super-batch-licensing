@@ -32,8 +32,8 @@ public class AuthServiceImpl implements AuthService {
             throw new ResourceNotFoundException(
                     "Invalid email or password");
         }
-        userRepository.save(user);
         user.setLastLogin(LocalDateTime.now());
+        userRepository.save(user);
         String token = jwtService.generateToken(user);
 
         LoginResponse loginResponse = LoginResponse.builder()
