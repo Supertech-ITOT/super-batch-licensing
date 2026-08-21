@@ -12,6 +12,10 @@ export const queryKeys = {
   plans: ["plans"] as const,
   plan: (id: number) => ["plans", id] as const,
 
+  // Products
+  products: ["products"] as const,
+  product: (id: number) => ["products", id] as const,
+
   // License
   licenses: ["licenses"] as const,
   license: (id: number) => ["licenses", id] as const,

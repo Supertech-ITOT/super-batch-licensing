@@ -17,7 +17,6 @@ import SidebarSkeleton from "./sidebar-skeleton";
 import UserAvatar from "../user-avatar";
 import {
   ConfigurationRoutes,
-  ModuleType,
   OperationRoutes,
 } from "@/features/auth/types/module.types";
 import SessionCard from "../session-card";

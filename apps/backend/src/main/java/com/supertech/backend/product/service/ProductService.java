@@ -1,12 +1,20 @@
 package com.supertech.backend.product.service;
 
-import java.util.Set;
+import java.util.List;
 
-import com.supertech.backend.product.entity.Products;
+import com.supertech.backend.product.dto.CreateProductRequest;
+import com.supertech.backend.product.dto.ProductResponse;
+import com.supertech.backend.product.dto.UpdateProductRequest;
 
 public interface ProductService {
-    void create(Products product);
+    void create(CreateProductRequest request);
 
-    Set<Products> getByIds(Set<Long> productIds);
+    void update(UpdateProductRequest request, Long id);
+
+    void delete(Long id);
+
+    ProductResponse getById(Long Id);
+
+    List<ProductResponse> getAll();
 
 }
