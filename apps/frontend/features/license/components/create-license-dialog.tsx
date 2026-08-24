@@ -13,9 +13,25 @@ import { showApiError } from "@/common/lib/show-api-error";
 import { showFormError } from "@/common/lib/show-form-error";
 import FormDialog from "@/common/components/form/form-dialog";
 import FormLoadingButton from "@/common/components/form/form-loading-button";
-import { Calendar, Fingerprint, KeyRound, Layers, Users } from "lucide-react";
+import { format } from "date-fns";
+import {
+  Boxes,
+  Calendar as CalendarIcon,
+  Fingerprint,
+  KeyRound,
+  Layers,
+  Users,
+} from "lucide-react";
 import { TextInput } from "@/common/components/form/text-input";
 import SearchableSelect from "@/common/components/form/searchable-select";
+import { useGetAllProducts } from "@/features/product/hooks/use-product";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/common/components/ui/popover";
+import { Button } from "@/common/components/ui/button";
+import { Calendar } from "@/common/components/ui/calendar";
 
 type Props = { open: boolean; onClose: () => void };
 export default function CreateLicenseDialog({ open, onClose }: Props) {
@@ -23,6 +39,7 @@ export default function CreateLicenseDialog({ open, onClose }: Props) {
     useCreateLicense();
   const { data: customers, isLoading: customersLoading } = useGetAllCustomers();
   const { data: plans, isLoading: plansLoading } = useGetAllPlans();
+  const { data: products, isLoading: productsLoading } = useGetAllProducts();
   const {
     register,
     handleSubmit,
@@ -39,6 +56,7 @@ export default function CreateLicenseDialog({ open, onClose }: Props) {
     isSubmitting ||
     isCreating ||
     customersLoading ||
+    productsLoading ||
     plansLoading ||
     licenseTypesLoading;
   const onSubmit = async (formData: CreateLicenseSchema) => {
@@ -62,11 +80,11 @@ export default function CreateLicenseDialog({ open, onClose }: Props) {
       open={open}
       loading={loading}
       onClose={handleClose}
-      title="Create Customer"
-      description="Create a new customer."
+      title="Create License"
+      description="Create a new license."
       footer={
         <FormLoadingButton
-          form="create-customer-form"
+          form="create-license-form"
           type="submit"
           loading={loading}
           disabled={!isDirty}
@@ -78,9 +96,9 @@ export default function CreateLicenseDialog({ open, onClose }: Props) {
     >
       <form
         onSubmit={handleSubmit(onSubmit, onInvalid)}
-        id="create-customer-form"
+        id="create-license-form"
       >
-        <div className="space-y-4">
+        <div className="space-y-2 grid grid-cols-2 gap-2">
           <Controller
             control={control}
             name="customerId"
@@ -98,6 +116,27 @@ export default function CreateLicenseDialog({ open, onClose }: Props) {
                 }
                 disabled={loading}
                 placeholder="Select customer"
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="productId"
+            render={({ field }) => (
+              <SearchableSelect
+                value={field.value}
+                icon={Boxes}
+                label="Product"
+                onChange={field.onChange}
+                options={
+                  products?.map((product) => ({
+                    label: product.name,
+                    value: product.id,
+                  })) ?? []
+                }
+                disabled={loading}
+                placeholder="Select product"
               />
             )}
           />
@@ -138,24 +177,63 @@ export default function CreateLicenseDialog({ open, onClose }: Props) {
                     value: lic.value,
                   })) ?? []
                 }
-                placeholder="Select license type"
+                placeholder="Select type"
                 disabled={loading}
               />
             )}
           />
 
-          <TextInput
-            label="Expiry Date"
-            icon={Calendar}
-            type="date"
-            disabled={loading}
-            {...register("expiryDate")}
+          <Controller
+            control={control}
+            name="expiryDate"
+            render={({ field }) => (
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium">Expiry Date</label>
+
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={loading}
+                      className="w-full justify-start text-left font-normal"
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+
+                      {field.value ? (
+                        format(
+                          new Date(field.value + "T00:00:00"),
+                          "dd MMM yyyy",
+                        )
+                      ) : (
+                        <span>Select expiry date</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={
+                        field.value
+                          ? new Date(field.value + "T00:00:00")
+                          : undefined
+                      }
+                      onSelect={(date) => {
+                        field.onChange(date ? format(date, "yyyy-MM-dd") : "");
+                      }}
+                      disabled={(date) => date <= new Date()}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+            )}
           />
 
           <TextInput
             label="Machine Fingerprint"
             icon={Fingerprint}
-            placeholder="Enter machine fingerprint"
+            placeholder="Fingerprint"
             disabled={loading}
             {...register("machineFingerprint")}
           />

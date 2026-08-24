@@ -9,6 +9,8 @@ import { Button } from "@/common/components/ui/button";
 import { Plus } from "lucide-react";
 import { columns } from "./columns";
 import CreateLicenseDialog from "./create-license-dialog";
+import UpdateLicenseDialog from "./update-license-dialog";
+import DeleteLicenseDialog from "./delete-license-dialog";
 
 export type DialogProp = {
   action: "create" | "edit" | "delete" | null;
@@ -45,7 +47,7 @@ export default function LicenseView() {
             <DataTableSearch
               table={table}
               column="customerName"
-              placeholder="Search customers..."
+              placeholder="Search license..."
             />
             <Button
               className="ml-auto text-white h-8 sm:h-10"
@@ -64,6 +66,20 @@ export default function LicenseView() {
         <>
           {dialog.action === "create" && (
             <CreateLicenseDialog open onClose={closeDialog} />
+          )}
+          {dialog.action === "edit" && dialog.id != null && (
+            <UpdateLicenseDialog
+              open={dialog.open}
+              licenseId={dialog.id}
+              onClose={closeDialog}
+            />
+          )}
+          {dialog.action === "delete" && dialog.id != null && (
+            <DeleteLicenseDialog
+              open={dialog.open}
+              licenseId={dialog.id}
+              onClose={closeDialog}
+            />
           )}
         </>
       }

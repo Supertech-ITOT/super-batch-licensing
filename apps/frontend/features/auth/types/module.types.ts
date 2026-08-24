@@ -5,6 +5,7 @@ import {
   KeyRound,
   LucideIcon,
   Settings,
+  Boxes,
 } from "lucide-react";
 
 export enum ModuleType {
@@ -12,6 +13,7 @@ export enum ModuleType {
   USERS = "USERS",
   PLANS = "PLANS",
   LICENSES = "LICENSES",
+  PRODUCTS = "PRODUCTS",
 }
 
 export interface ModuleResponse {
@@ -63,6 +65,15 @@ export const OperationRoutes: RouteType[] = [
     module: ModuleType.LICENSES,
     description:
       "Generate, activate, suspend, revoke, and monitor software licenses.",
+  },
+  {
+    label: "Products",
+    short: "Products",
+    path: "/products",
+    icon: Boxes,
+    module: ModuleType.PRODUCTS,
+    description:
+      "Manage products and their information for license and plan assignment.",
   },
 ];
 

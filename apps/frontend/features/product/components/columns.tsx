@@ -19,20 +19,33 @@ export const productColumns = (
   setDialog: React.Dispatch<React.SetStateAction<DialogProp>>,
 ): ColumnDef<ProductResponse>[] => [
   {
-    accessorKey: "id",
-    header: "ID",
+    id: "srNo",
+    header: "Sr.No",
+    cell: ({ row }) => row.index + 1,
+    meta: {
+      align: "center",
+    },
   },
   {
     accessorKey: "name",
     header: "Product Name",
+    meta: {
+      align: "center",
+    },
   },
   {
     accessorKey: "code",
     header: "Product Code",
+    meta: {
+      align: "center",
+    },
   },
   {
     accessorKey: "description",
     header: "Description",
+    meta: {
+      align: "center",
+    },
     cell: ({ row }) => row.original.description || "-",
   },
   {

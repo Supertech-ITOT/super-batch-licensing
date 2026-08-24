@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { useGetAllProducts } from "../hooks/use-product";
 import FeedbackState from "@/common/components/feedback-state";
@@ -6,6 +8,9 @@ import DataTableSearch from "@/common/components/data-table/data-table-search";
 import { Button } from "@/common/components/ui/button";
 import { Plus } from "lucide-react";
 import { productColumns } from "./columns";
+import CreateProductDialog from "./create-product-dialog";
+import UpdateProductDialog from "./update-product-dialog";
+import DeleteProductDialog from "./delete-product-dialog";
 
 export type DialogProp = {
   action: "create" | "edit" | "delete" | null;
@@ -13,7 +18,7 @@ export type DialogProp = {
   open: boolean;
 };
 export default function ProductView() {
-  const { data: customers, isLoading, isError } = useGetAllProducts();
+  const { data: products, isLoading, isError } = useGetAllProducts();
   const [dialog, setDialog] = useState<DialogProp>({
     action: null,
     id: null,
@@ -27,21 +32,21 @@ export default function ProductView() {
   if (isError) {
     return <FeedbackState variant="error" />;
   }
-  if (!customers) {
+  if (!products) {
     return <FeedbackState variant="empty" />;
   }
   return (
     <div className="flex flex-col rounded-2xl border shadow  bg-card p-2 sm:p-4 flex-1">
       <DataTable
         columns={productColumns(setDialog)}
-        data={customers}
+        data={products}
         pageSize={10}
         toolbar={(table) => (
           <div className="flex items-center gap-2">
             <DataTableSearch
               table={table}
-              column="companyName"
-              placeholder="Search customers..."
+              column="name"
+              placeholder="Search products..."
             />
             <Button
               className="ml-auto text-white h-8 sm:h-10"
@@ -50,11 +55,32 @@ export default function ProductView() {
               }
             >
               <Plus className="mr-2 h-4 w-4" />
-              Add Customer
+              Add Product
             </Button>
           </div>
         )}
       />
+      {
+        <>
+          {dialog.action === "create" && (
+            <CreateProductDialog open onClose={closeDialog} />
+          )}
+          {dialog.action === "edit" && dialog.id != null && (
+            <UpdateProductDialog
+              open={dialog.open}
+              productId={dialog.id}
+              onClose={closeDialog}
+            />
+          )}
+          {dialog.action === "delete" && dialog.id != null && (
+            <DeleteProductDialog
+              open={dialog.open}
+              productId={dialog.id}
+              onClose={closeDialog}
+            />
+          )}
+        </>
+      }
     </div>
   );
 }

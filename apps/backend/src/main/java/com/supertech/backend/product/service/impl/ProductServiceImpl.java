@@ -25,12 +25,14 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
 
     @Override
+    @Transactional
     public void create(CreateProductRequest request) {
         Products products = productMapper.toEntity(request);
         productRepository.save(products);
     }
 
     @Override
+    @Transactional
     public void update(UpdateProductRequest request, Long id) {
         Products products = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Plant not found"));
@@ -39,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Products products = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Plant not found"));

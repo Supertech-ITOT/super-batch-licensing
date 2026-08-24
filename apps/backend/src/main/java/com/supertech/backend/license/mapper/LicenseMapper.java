@@ -56,6 +56,15 @@ public class LicenseMapper {
                 .customerId(license.getCustomers().getId())
                 .customerName(license.getCustomers().getCompanyName())
 
+                .productId(
+                        license.getProduct() != null
+                                ? license.getProduct().getId()
+                                : null)
+                .productName(
+                        license.getProduct() != null
+                                ? license.getProduct().getName()
+                                : null)
+
                 .planId(license.getPlans().getId())
                 .planName(license.getPlans().getName())
 

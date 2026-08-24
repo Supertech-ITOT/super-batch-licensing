@@ -8,6 +8,12 @@ export const licenseSchema = z.object({
     })
     .positive("Customer is required"),
 
+  productId: z
+    .number({
+      error: "Product is required",
+    })
+    .positive("Product is required"),
+
   planId: z
     .number({
       error: "Plan is required",
@@ -35,6 +41,7 @@ export const createLicenseSchema = licenseSchema.omit({
 
 export const updateLicenseSchema = licenseSchema.omit({
   customerId: true,
+  productId: true,
   planId: true,
   type: true,
 });
@@ -47,8 +54,15 @@ export type UpdateLicenseSchema = z.infer<typeof updateLicenseSchema>;
 
 export const licenseDefaultValues: CreateLicenseSchema = {
   customerId: 0,
+  productId: 0,
   planId: 0,
   type: "",
+  expiryDate: "",
+  machineFingerprint: "",
+};
+
+export const updateLicenseDefaultValues: UpdateLicenseSchema = {
+  status: "",
   expiryDate: "",
   machineFingerprint: "",
 };

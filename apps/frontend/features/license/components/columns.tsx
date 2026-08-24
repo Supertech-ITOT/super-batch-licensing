@@ -42,6 +42,14 @@ export const columns = (
   },
 
   {
+    accessorKey: "productName",
+    header: "Product",
+    meta: {
+      align: "center",
+    },
+  },
+
+  {
     accessorKey: "planName",
     header: "Plan",
     meta: {

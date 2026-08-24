@@ -100,6 +100,7 @@ export default function UpdatePlanDialog({ open, onClose, planId }: Props) {
               placeholder="Professional Plan"
               maxLength={PlanSchemaLimit.name.max}
               disabled={loading}
+              value={watch("name")}
               {...register("name")}
             />
 
@@ -111,16 +112,20 @@ export default function UpdatePlanDialog({ open, onClose, planId }: Props) {
               placeholder="PRO"
               maxLength={PlanSchemaLimit.code.max}
               disabled={loading}
+              value={watch("code")}
               {...register("code")}
             />
           </div>
 
           <TextAreaInput
             label="Description"
+            counter
             placeholder="Professional subscription plan"
             maxLength={PlanSchemaLimit.description.max}
+            maxCharacters={PlanSchemaLimit.description.max}
             disabled={loading}
             icon={Feather}
+            value={watch("description")}
             {...register("description")}
           />
           <div className="grid grid-cols-2 gap-2">
