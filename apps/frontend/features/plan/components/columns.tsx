@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/common/components/ui/dropdown-menu";
 import { Button } from "@/common/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import { Edit3Icon, MoreHorizontal, Trash2 } from "lucide-react";
 import { DialogProp } from "./plan-view";
 
 export const columns = (
@@ -122,6 +122,7 @@ export const columns = (
                 setDialog({ action: "edit", id: customer.id, open: true });
               }}
             >
+              <Edit3Icon className="mr-2 h-4 w-4" />
               Edit
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -133,6 +134,7 @@ export const columns = (
                 setDialog({ action: "delete", id: customer.id, open: true });
               }}
             >
+              <Trash2 className="mr-2 h-4 w-4" />
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

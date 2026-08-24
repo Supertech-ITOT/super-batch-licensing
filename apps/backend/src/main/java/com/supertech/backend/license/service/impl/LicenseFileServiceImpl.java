@@ -7,7 +7,6 @@ import com.supertech.backend.common.exception.BadRequestException;
 import com.supertech.backend.license.dto.LicenseFileContent;
 import com.supertech.backend.license.entity.License;
 import com.supertech.backend.license.service.LicenseFileService;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -44,7 +43,9 @@ public class LicenseFileServiceImpl implements LicenseFileService {
                                         .getBytes(StandardCharsets.UTF_8);
 
                 } catch (Exception e) {
-                        throw new BadRequestException("Failed to generate license file");
+                        e.printStackTrace();
+                        throw new BadRequestException(
+                                        "Failed to generate license file: " + e.getMessage());
                 }
         }
 

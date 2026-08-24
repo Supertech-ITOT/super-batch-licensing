@@ -48,3 +48,29 @@ export const getLicenseTypes = async () => {
   );
   return res.data;
 };
+
+export const downloadLicenseKey = async (id: number) => {
+  const res = await api.get(`/licenses/${id}/download-key`, {
+    responseType: "blob",
+  });
+
+  return res.data;
+};
+
+export const downloadLicenseFile = async (id: number) => {
+  const res = await api.get(`/licenses/${id}/download-file`, {
+    responseType: "blob",
+  });
+
+  return res.data;
+};
+
+export const sendLicenseKey = async (id: number) => {
+  const res = await api.post(`/licenses/${id}/send-key`);
+  return res.data;
+};
+
+export const sendLicenseFile = async (id: number) => {
+  const res = await api.post(`/licenses/${id}/send-file`);
+  return res.data;
+};

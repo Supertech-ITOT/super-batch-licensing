@@ -38,3 +38,17 @@ export interface UpdateLicenseRequest {
   expiryDate: string;
   machineFingerprint?: string;
 }
+
+export type SendLicenseKeyResponse = string;
+
+export type SendLicenseFileResponse = string;
+
+export interface DownloadLicenseFileResponse {
+  blob: Blob;
+  fileName: string;
+}
+
+export interface DownloadLicenseKeyResponse {
+  blob: Blob;
+  fileName: string;
+}

@@ -53,7 +53,9 @@ public class LicenseSigningServiceImpl implements LicenseSigningService {
                         byte[] signedBytes = signature.sign();
                         return Base64.getEncoder().encodeToString(signedBytes);
                 } catch (Exception e) {
-                        throw new BadRequestException("Failed to generate license signature");
+                        e.printStackTrace();
+                        throw new BadRequestException(
+                                        "Failed to generate license file: " + e.getMessage());
                 }
 
         }

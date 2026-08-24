@@ -66,3 +66,9 @@ export const updateLicenseDefaultValues: UpdateLicenseSchema = {
   expiryDate: "",
   machineFingerprint: "",
 };
+
+export const licenseIdSchema = z.object({
+  id: z.number().positive("License ID must be valid"),
+});
+
+export type LicenseIdSchema = z.infer<typeof licenseIdSchema>;

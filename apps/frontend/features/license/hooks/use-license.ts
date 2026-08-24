@@ -2,12 +2,17 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "../../common/query-keys";
 import {
   create,
+  downloadLicenseFile,
+  downloadLicenseKey,
   getAll,
   getById,
   getLicenseTypes,
   remove,
+  sendLicenseFile,
+  sendLicenseKey,
   update,
 } from "../service/license.service";
+import { queryClient } from "@/common/lib/query-client";
 
 export const useGetAllLicenses = () => {
   return useQuery({
@@ -77,5 +82,29 @@ export const useGetLicenseTypes = () => {
       const res = await getLicenseTypes();
       return res.data;
     },
+  });
+};
+
+export const useDownloadLicenseKey = () => {
+  return useMutation({
+    mutationFn: downloadLicenseKey,
+  });
+};
+
+export const useDownloadLicenseFile = () => {
+  return useMutation({
+    mutationFn: downloadLicenseFile,
+  });
+};
+
+export const useSendLicenseKey = () => {
+  return useMutation({
+    mutationFn: sendLicenseKey,
+  });
+};
+
+export const useSendLicenseFile = () => {
+  return useMutation({
+    mutationFn: sendLicenseFile,
   });
 };

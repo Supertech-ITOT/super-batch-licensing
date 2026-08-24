@@ -4,12 +4,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Sort;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.supertech.backend.common.exception.BadRequestException;
 import com.supertech.backend.common.exception.ResourceNotFoundException;
 import com.supertech.backend.customer.entity.Customers;
@@ -34,7 +34,6 @@ import com.supertech.backend.product.entity.Products;
 import com.supertech.backend.product.repository.ProductRepository;
 import com.supertech.backend.user.entity.Users;
 import com.supertech.backend.user.repository.UserRepository;
-
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -94,8 +93,11 @@ public class LicenseServiceImpl implements LicenseService {
 
         @Override
         public List<LicenseResponse> getAll() {
-                return licenseRepository.findAll().stream().map(licenseMapper::toResponse).toList();
-
+                return licenseRepository.findAll(
+                                Sort.by(Sort.Direction.DESC, "createdAt"))
+                                .stream()
+                                .map(licenseMapper::toResponse)
+                                .toList();
         }
 
         @Override
