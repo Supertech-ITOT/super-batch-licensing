@@ -1,11 +1,23 @@
 import { z } from "zod";
 
 export const CustomerSchemaLimit = {
+  name: { min: 2, max: 50 },
   companyName: { min: 2, max: 100 },
   email: { max: 100 },
 } as const;
 
 export const customerSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(
+      CustomerSchemaLimit.name.min,
+      ` name must be at least ${CustomerSchemaLimit.name.min} characters`,
+    )
+    .max(
+      CustomerSchemaLimit.name.max,
+      ` name cannot exceed ${CustomerSchemaLimit.name.max} characters`,
+    ),
   companyName: z
     .string()
     .trim()
@@ -36,5 +48,6 @@ export type UpdateCustomerSchema = z.infer<typeof updateCustomerSchema>;
 
 export const customerDefaultValues: CustomerSchema = {
   email: "",
+  name: "",
   companyName: "",
 };

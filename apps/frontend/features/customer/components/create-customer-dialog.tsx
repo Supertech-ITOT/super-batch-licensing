@@ -12,7 +12,7 @@ import { showApiError } from "../../../common/lib/show-api-error";
 import FormDialog from "@/common/components/form/form-dialog";
 import { TextInput } from "@/common/components/form/text-input";
 import FormLoadingButton from "@/common/components/form/form-loading-button";
-import { Mail, User, Users } from "lucide-react";
+import { Building, Mail, User, Users } from "lucide-react";
 import { showFormError } from "@/common/lib/show-form-error";
 
 type Props = { open: boolean; onClose: () => void };
@@ -76,8 +76,19 @@ export default function CreateCustomerDialog({ open, onClose }: Props) {
             label="Name"
             icon={User}
             counter
-            maxCharacters={CustomerSchemaLimit.companyName.max}
+            maxCharacters={CustomerSchemaLimit.name.max}
             placeholder="Jhon Joe"
+            maxLength={CustomerSchemaLimit.name.max}
+            disabled={loading}
+            value={watch("name")}
+            {...register("name")}
+          />
+          <TextInput
+            label="Company"
+            icon={Building}
+            counter
+            maxCharacters={CustomerSchemaLimit.companyName.max}
+            placeholder="abc pvt.ltd."
             maxLength={CustomerSchemaLimit.companyName.max}
             disabled={loading}
             value={watch("companyName")}

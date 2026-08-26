@@ -1,7 +1,6 @@
 package com.supertech.backend.license.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import com.supertech.backend.license.enums.LicenseStatus;
 import com.supertech.backend.license.enums.LicenseType;
@@ -18,13 +17,15 @@ public record TrialLicenseResponse(
         String planName,
         String planDescription,
         String licenseKey,
+        String customerEmail,
         LicenseType type,
         LicenseStatus status,
         LocalDate issueDate,
-        LocalDateTime activationDate,
+        LocalDate activationDate,
         LocalDate expiryDate,
         String machineFingerprint,
         String licenseFileName,
         Long productId,
+        String signature,
         byte[] licenseFile) {
 }

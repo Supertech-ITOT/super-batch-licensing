@@ -1,18 +1,31 @@
 package com.supertech.backend.license.dto;
 
+import java.time.LocalDate;
+
+import com.supertech.backend.license.enums.LicenseStatus;
+import com.supertech.backend.license.enums.LicenseType;
+
 import lombok.Builder;
 
 @Builder
 public record LicenseSignaturePayload(
         String licenseNumber,
         String licenseKey,
-        Object type,
-        Object status,
-        Object issueDate,
-        Object activationDate,
-        Object expiryDate,
+        LicenseType type,
+        LicenseStatus status,
+        LocalDate issueDate,
+        LocalDate activationDate,
+        LocalDate expiryDate,
         String machineFingerprint,
         Long customerId,
+        String customerName,
+        String customerEmail,
+        String companyName,
         Long planId,
-        Long productIds) {
+        String planName,
+        String planDescription,
+        Integer planMaxUsers,
+        Long productId
+
+) {
 }

@@ -29,7 +29,6 @@ export interface CreateLicenseRequest {
   customerId: number;
   planId: number;
   type: string;
-  expiryDate: string;
   machineFingerprint?: string;
 }
 

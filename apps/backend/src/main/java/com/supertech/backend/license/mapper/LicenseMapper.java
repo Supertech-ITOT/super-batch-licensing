@@ -2,9 +2,7 @@ package com.supertech.backend.license.mapper;
 
 import java.time.LocalDate;
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
-
 import com.supertech.backend.customer.entity.Customers;
 import com.supertech.backend.license.dto.CreateLicenseRequest;
 import com.supertech.backend.license.dto.LicenseResponse;
@@ -12,15 +10,27 @@ import com.supertech.backend.license.dto.TrialLicenseResponse;
 import com.supertech.backend.license.dto.UpadteLicenseRequest;
 import com.supertech.backend.license.entity.License;
 import com.supertech.backend.license.enums.LicenseStatus;
+import com.supertech.backend.license.enums.LicenseType;
+import com.supertech.backend.license.service.MachineFingerprintService;
 import com.supertech.backend.plan.entity.Plans;
 import com.supertech.backend.product.entity.Products;
 import com.supertech.backend.user.entity.Users;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class LicenseMapper {
+        private final MachineFingerprintService machineFingerprintService;
+
         public License toEntity(CreateLicenseRequest request, Customers customer, Products products, Users createdBy,
                         Plans plan) {
                 String licenseNumber = generateLicenseNumber();
+                LocalDate issueDate = LocalDate.now();
+                LocalDate activationDate = LocalDate.now();
+                LocalDate expiryDate = issueDate.plusMonths(plan.getDurationMonths());
+                String machineFingerprint = machineFingerprintService.sha256(request.machineFingerprint());
+
                 return License.builder()
                                 .licenseNumber(licenseNumber)
                                 .licenseKey(UUID.randomUUID().toString())
@@ -29,9 +39,10 @@ public class LicenseMapper {
                                 .plans(plan)
                                 .type(request.type())
                                 .status(LicenseStatus.ACTIVE)
-                                .issueDate(LocalDate.now())
-                                .expiryDate(request.expiryDate())
-                                .machineFingerprint(request.machineFingerprint())
+                                .activationDate(activationDate)
+                                .issueDate(issueDate)
+                                .expiryDate(expiryDate)
+                                .machineFingerprint(machineFingerprint)
                                 .licenseFileName(licenseNumber + ".lic")
                                 .createdBy(createdBy)
                                 .build();
@@ -39,51 +50,31 @@ public class LicenseMapper {
         }
 
         public void updateEntity(UpadteLicenseRequest request, License license) {
-
+                String machineFingerprint = machineFingerprintService.sha256(request.machineFingerprint());
                 license.setStatus(request.status());
                 license.setExpiryDate(request.expiryDate());
-                license.setMachineFingerprint(request.machineFingerprint());
+                license.setMachineFingerprint(machineFingerprint);
         }
 
         public LicenseResponse toResponse(License license) {
 
                 return LicenseResponse.builder()
                                 .id(license.getId())
-
                                 .licenseNumber(license.getLicenseNumber())
                                 .licenseKey(license.getLicenseKey())
-
                                 .customerId(license.getCustomers().getId())
                                 .customerName(license.getCustomers().getCompanyName())
-
-                                .productId(
-                                                license.getProduct() != null
-                                                                ? license.getProduct().getId()
-                                                                : null)
-                                .productName(
-                                                license.getProduct() != null
-                                                                ? license.getProduct().getName()
-                                                                : null)
-
-                                .planId(
-                                                license.getPlans() != null
-                                                                ? license.getPlans().getId()
-                                                                : null)
-                                .planName(
-                                                license.getPlans() != null
-                                                                ? license.getPlans().getName()
-                                                                : null)
-
+                                .productId(license.getProduct().getId())
+                                .productName(license.getProduct().getName())
+                                .planId(license.getPlans().getId())
+                                .planName(license.getPlans().getName())
                                 .type(license.getType())
                                 .status(license.getStatus())
-
                                 .issueDate(license.getIssueDate())
                                 .activationDate(license.getActivationDate())
                                 .expiryDate(license.getExpiryDate())
-
                                 .machineFingerprint(license.getMachineFingerprint())
                                 .licenseFileName(license.getLicenseFileName())
-
                                 .createdAt(license.getCreatedAt())
                                 .updatedAt(license.getUpdatedAt())
                                 .build();
@@ -109,6 +100,7 @@ public class LicenseMapper {
                                 .planName(license.getPlans().getName())
                                 .planDescription(license.getPlans().getDescription())
                                 .licenseKey(license.getLicenseKey())
+                                .customerEmail(license.getCustomers().getEmail())
                                 .type(license.getType())
                                 .status(license.getStatus())
                                 .issueDate(license.getIssueDate())
@@ -117,7 +109,35 @@ public class LicenseMapper {
                                 .machineFingerprint(license.getMachineFingerprint())
                                 .licenseFileName(license.getLicenseFileName())
                                 .productId(license.getProduct().getId())
+                                .signature(license.getSignature())
                                 .licenseFile(licenseFile)
+                                .build();
+        }
+
+        public License createTrialLicense(
+                        Customers customer,
+                        Products product,
+                        Plans plan,
+                        String machineFingerprint) {
+
+                String licenseNumber = generateLicenseNumber();
+                LocalDate issueDate = LocalDate.now();
+                LocalDate expiryDate = issueDate.plusMonths(plan.getDurationMonths());
+                LocalDate activationDate = LocalDate.now();
+
+                return License.builder()
+                                .licenseNumber(licenseNumber)
+                                .licenseKey(UUID.randomUUID().toString())
+                                .customers(customer)
+                                .product(product)
+                                .status(LicenseStatus.ACTIVE)
+                                .type(LicenseType.TRIAL)
+                                .issueDate(issueDate)
+                                .activationDate(activationDate)
+                                .expiryDate(expiryDate)
+                                .machineFingerprint(machineFingerprint)
+                                .licenseFileName(licenseNumber + ".lic")
+                                .plans(plan)
                                 .build();
         }
 

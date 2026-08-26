@@ -1,5 +1,6 @@
 export interface CustomerResponse {
   id: number;
+  name: string;
   companyName: string;
   email: string;
   status: string;
@@ -8,11 +9,13 @@ export interface CustomerResponse {
 }
 
 export interface CreateCustomerRequest {
+  name: string;
   companyName: string;
   email: string;
 }
 
 export interface UpdateCustomerRequest {
+  name: string;
   companyName: string;
   email: string;
 }

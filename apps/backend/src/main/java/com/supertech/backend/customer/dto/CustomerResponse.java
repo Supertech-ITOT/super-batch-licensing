@@ -6,14 +6,16 @@ import lombok.*;
 
 @Builder
 public record CustomerResponse(
-                Long id,
+        Long id,
 
-                String companyName,
+        String name,
 
-                String email,
+        String companyName,
 
-                LocalDateTime createdAt,
+        String email,
 
-                LocalDateTime updatedAt) {
+        LocalDateTime createdAt,
+
+        LocalDateTime updatedAt) {
 
 }

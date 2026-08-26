@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { LicenseStatus, LicenseType } from "../types/license.enums";
 
 export const licenseSchema = z.object({
   customerId: z
@@ -32,11 +31,12 @@ export const licenseSchema = z.object({
 
   expiryDate: z.string().min(1, "Expiry date is required"),
 
-  machineFingerprint: z.string().optional(),
+  machineFingerprint: z.string().trim().optional(),
 });
 
 export const createLicenseSchema = licenseSchema.omit({
   status: true,
+  expiryDate: true,
 });
 
 export const updateLicenseSchema = licenseSchema.omit({
@@ -57,7 +57,6 @@ export const licenseDefaultValues: CreateLicenseSchema = {
   productId: 0,
   planId: 0,
   type: "",
-  expiryDate: "",
   machineFingerprint: "",
 };
 

@@ -33,18 +33,15 @@ public class LicenseSigningServiceImpl implements LicenseSigningService {
                                                         .activationDate(license.getActivationDate())
                                                         .expiryDate(license.getExpiryDate())
                                                         .machineFingerprint(license.getMachineFingerprint())
-                                                        .customerId(
-                                                                        license.getCustomers() != null
-                                                                                        ? license.getCustomers().getId()
-                                                                                        : null)
-                                                        .planId(
-                                                                        license.getPlans() != null
-                                                                                        ? license.getPlans().getId()
-                                                                                        : null)
-                                                        .productIds(
-                                                                        license.getProduct() != null
-                                                                                        ? license.getProduct().getId()
-                                                                                        : null)
+                                                        .customerId(license.getCustomers().getId())
+                                                        .customerName(license.getCustomers().getName())
+                                                        .customerEmail(license.getCustomers().getEmail())
+                                                        .companyName(license.getCustomers().getCompanyName())
+                                                        .planId(license.getPlans().getId())
+                                                        .planName(license.getPlans().getName())
+                                                        .planDescription(license.getPlans().getDescription())
+                                                        .planMaxUsers(license.getPlans().getMaxUsers())
+                                                        .productId(license.getProduct().getId())
                                                         .build());
 
                         Signature signature = Signature.getInstance("SHA256withRSA");

@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { showApiError } from "@/common/lib/show-api-error";
 import { showFormError } from "@/common/lib/show-form-error";
 import FormLoadingButton from "@/common/components/form/form-loading-button";
-import { Mail, User, Users } from "lucide-react";
+import { Building, Mail, User, Users } from "lucide-react";
 import { TextInput } from "@/common/components/form/text-input";
 import { useEffect } from "react";
 
@@ -89,11 +89,22 @@ export default function UpdateCustomerDialog({
       >
         <div className="space-y-4">
           <TextInput
-            label="Company Name"
+            label="Name"
             icon={User}
             counter
+            maxCharacters={CustomerSchemaLimit.name.max}
+            placeholder="Jhon Joe"
+            maxLength={CustomerSchemaLimit.name.max}
+            disabled={loading}
+            value={watch("name")}
+            {...register("name")}
+          />
+          <TextInput
+            label="Company"
+            icon={Building}
+            counter
             maxCharacters={CustomerSchemaLimit.companyName.max}
-            placeholder="Supertech Instrumentation Pvt Ltd"
+            placeholder="abc pvt.ltd."
             maxLength={CustomerSchemaLimit.companyName.max}
             disabled={loading}
             value={watch("companyName")}

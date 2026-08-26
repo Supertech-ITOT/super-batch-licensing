@@ -1,7 +1,6 @@
 package com.supertech.backend.license.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import com.supertech.backend.license.enums.LicenseStatus;
 import com.supertech.backend.license.enums.LicenseType;
@@ -9,31 +8,25 @@ import com.supertech.backend.license.enums.LicenseType;
 import lombok.Builder;
 
 @Builder
-public record LicenseResponse(
-                Long id,
+public record LicenseFilePayload(
                 String licenseNumber,
-                String licenseKey,
-
                 Long customerId,
                 String customerName,
-
-                Long productId,
-                String productName,
-
+                String customerEmail,
+                String companyName,
                 Long planId,
+                Integer planMaxUsers,
                 String planName,
-
+                String planDescription,
+                String licenseKey,
                 LicenseType type,
                 LicenseStatus status,
-
                 LocalDate issueDate,
                 LocalDate activationDate,
                 LocalDate expiryDate,
-
                 String machineFingerprint,
                 String licenseFileName,
-
-                LocalDateTime createdAt,
-                LocalDateTime updatedAt) {
+                Long productId,
+                String signature) {
 
 }

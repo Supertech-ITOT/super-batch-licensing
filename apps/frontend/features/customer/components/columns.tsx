@@ -25,6 +25,13 @@ export const columns = (
     },
   },
   {
+    accessorKey: "name",
+    header: "Name",
+    meta: {
+      align: "center",
+    },
+  },
+  {
     accessorKey: "companyName",
     header: "Company Name",
     meta: {

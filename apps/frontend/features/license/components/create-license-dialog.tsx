@@ -13,25 +13,10 @@ import { showApiError } from "@/common/lib/show-api-error";
 import { showFormError } from "@/common/lib/show-form-error";
 import FormDialog from "@/common/components/form/form-dialog";
 import FormLoadingButton from "@/common/components/form/form-loading-button";
-import { format } from "date-fns";
-import {
-  Boxes,
-  Calendar as CalendarIcon,
-  Fingerprint,
-  KeyRound,
-  Layers,
-  Users,
-} from "lucide-react";
+import { Boxes, Fingerprint, KeyRound, Layers, Users } from "lucide-react";
 import { TextInput } from "@/common/components/form/text-input";
 import SearchableSelect from "@/common/components/form/searchable-select";
 import { useGetAllProducts } from "@/features/product/hooks/use-product";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/common/components/ui/popover";
-import { Button } from "@/common/components/ui/button";
-import { Calendar } from "@/common/components/ui/calendar";
 
 type Props = { open: boolean; onClose: () => void };
 export default function CreateLicenseDialog({ open, onClose }: Props) {
@@ -98,7 +83,7 @@ export default function CreateLicenseDialog({ open, onClose }: Props) {
         onSubmit={handleSubmit(onSubmit, onInvalid)}
         id="create-license-form"
       >
-        <div className="space-y-2 grid grid-cols-2 gap-2">
+        <div className="space-y-2 grid grid-cols-2 gap-2 grow">
           <Controller
             control={control}
             name="customerId"
@@ -110,7 +95,7 @@ export default function CreateLicenseDialog({ open, onClose }: Props) {
                 onChange={field.onChange}
                 options={
                   customers?.map((customer) => ({
-                    label: customer.companyName,
+                    label: customer.name,
                     value: customer.id,
                   })) ?? []
                 }
@@ -183,60 +168,15 @@ export default function CreateLicenseDialog({ open, onClose }: Props) {
             )}
           />
 
-          <Controller
-            control={control}
-            name="expiryDate"
-            render={({ field }) => (
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium">Expiry Date</label>
-
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      disabled={loading}
-                      className="w-full justify-start text-left font-normal"
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-
-                      {field.value ? (
-                        format(
-                          new Date(field.value + "T00:00:00"),
-                          "dd MMM yyyy",
-                        )
-                      ) : (
-                        <span>Select expiry date</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={
-                        field.value
-                          ? new Date(field.value + "T00:00:00")
-                          : undefined
-                      }
-                      onSelect={(date) => {
-                        field.onChange(date ? format(date, "yyyy-MM-dd") : "");
-                      }}
-                      disabled={(date) => date <= new Date()}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-            )}
-          />
-
-          <TextInput
-            label="Machine Fingerprint"
-            icon={Fingerprint}
-            placeholder="Fingerprint"
-            disabled={loading}
-            {...register("machineFingerprint")}
-          />
+          <div className="col-span-2">
+            <TextInput
+              label="Machine Fingerprint"
+              icon={Fingerprint}
+              placeholder="Fingerprint"
+              disabled={loading}
+              {...register("machineFingerprint")}
+            />
+          </div>
         </div>
       </form>
     </FormDialog>

@@ -21,7 +21,6 @@ import com.supertech.backend.license.dto.TrialLicenseRequest;
 import com.supertech.backend.license.dto.TrialLicenseResponse;
 import com.supertech.backend.license.dto.UpadteLicenseRequest;
 import com.supertech.backend.license.entity.License;
-import com.supertech.backend.license.factory.LicenseFactory;
 import com.supertech.backend.license.mapper.LicenseMapper;
 import com.supertech.backend.license.repository.LicenseRepository;
 import com.supertech.backend.license.service.LicenseFileService;
@@ -51,7 +50,6 @@ public class LicenseServiceImpl implements LicenseService {
         private final LicenseSigningService licenseSigningService;
         private final LicenseFileService licenseFileService;
         private final LicenseValidationService licenseValidationService;
-        private final LicenseFactory licenseFactory;
         private final ProductRepository productRepository;
         private final CustomerService customerService;
         private final JavaMailSender mailSender;
@@ -122,7 +120,7 @@ public class LicenseServiceImpl implements LicenseService {
 
                 licenseValidationService.validateTrial(customer, product);
 
-                License license = licenseFactory.createTrialLicense(
+                License license = licenseMapper.createTrialLicense(
                                 customer,
                                 product,
                                 plans,
