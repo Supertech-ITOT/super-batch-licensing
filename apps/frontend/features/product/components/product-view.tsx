@@ -40,7 +40,7 @@ export default function ProductView() {
       <DataTable
         columns={productColumns(setDialog)}
         data={products}
-        pageSize={10}
+        pageSize={15}
         toolbar={(table) => (
           <div className="flex items-center gap-2">
             <DataTableSearch

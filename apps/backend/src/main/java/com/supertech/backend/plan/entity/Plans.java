@@ -27,6 +27,9 @@ public class Plans {
     private Integer durationMonths;
     private Integer maxUsers;
 
+    @Builder.Default
+    private Boolean canDelete = true;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

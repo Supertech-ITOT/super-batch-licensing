@@ -2,6 +2,7 @@ package com.supertech.backend.license.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import com.supertech.backend.license.dto.TrialLicenseRequest;
 import com.supertech.backend.license.dto.TrialLicenseResponse;
 import com.supertech.backend.license.dto.UpadteLicenseRequest;
 import com.supertech.backend.license.service.LicenseService;
+import com.supertech.backend.license.util.PublicKeyGenerator;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/licenses")
 @RequiredArgsConstructor
 public class LicenseController {
+    @Value("${license.private-key}")
+    private String licensePrivateKey;
     private final LicenseService licenseService;
 
     @PostMapping
@@ -96,19 +100,23 @@ public class LicenseController {
     }
 
     @PostMapping("/{id}/send-key")
-    public ResponseEntity<String> sendLicenseKey(@PathVariable Long id) {
-
+    public ResponseEntity<ApiResponse<Void>> sendLicenseKey(@PathVariable Long id) {
         licenseService.sendLicenseKey(id);
-
-        return ResponseEntity.ok("License key email sent successfully");
+        return ResponseEntity.ok(
+                ApiResponse.success("License key email sent successfully", null));
     }
 
     @PostMapping("/{id}/send-file")
-    public ResponseEntity<String> sendLicenseFile(@PathVariable Long id) {
-
+    public ResponseEntity<ApiResponse<Void>> sendLicenseFile(@PathVariable Long id) {
         licenseService.sendLicenseFile(id);
+        return ResponseEntity.ok(
+                ApiResponse.success("License file email sent successfully", null));
+    }
 
-        return ResponseEntity.ok("License file email sent successfully");
+    @GetMapping("/public-key")
+    public ResponseEntity<ApiResponse<String>> getPublicKey() throws Exception {
+        String publicKey = PublicKeyGenerator.generatePublicKey(licensePrivateKey);
+        return ResponseEntity.ok(ApiResponse.success("Public key generated successfully", publicKey));
     }
 
 }

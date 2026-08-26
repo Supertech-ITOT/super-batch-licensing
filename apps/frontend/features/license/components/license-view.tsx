@@ -41,7 +41,7 @@ export default function LicenseView() {
       <DataTable
         columns={columns(setDialog)}
         data={licenses}
-        pageSize={10}
+        pageSize={15}
         toolbar={(table) => (
           <div className="flex items-center gap-2">
             <DataTableSearch

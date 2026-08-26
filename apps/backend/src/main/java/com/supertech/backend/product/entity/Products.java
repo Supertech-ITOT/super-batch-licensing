@@ -31,4 +31,7 @@ public class Products {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @Builder.Default
+    private Boolean canDelete = true;
 }

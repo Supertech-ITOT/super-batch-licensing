@@ -46,7 +46,7 @@ public class License {
     private LicenseStatus status;
 
     private LocalDate issueDate;
-    private LocalDate activationDate;
+    private LocalDateTime activationDate;
     private LocalDate expiryDate;
     private String machineFingerprint;
 

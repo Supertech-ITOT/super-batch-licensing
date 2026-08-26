@@ -2,9 +2,11 @@ package com.supertech.backend.product.service.impl;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.supertech.backend.common.exception.BadRequestException;
 import com.supertech.backend.common.exception.ResourceNotFoundException;
 import com.supertech.backend.product.dto.CreateProductRequest;
 import com.supertech.backend.product.dto.ProductResponse;
@@ -45,6 +47,9 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long id) {
         Products products = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Plant not found"));
+        if (!products.getCanDelete()) {
+            throw new BadRequestException("This product cannot be delete.");
+        }
         productRepository.delete(products);
     }
 
@@ -58,7 +63,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponse> getAll() {
-        return productRepository.findAll().stream().map(productMapper::toResponse).toList();
+        return productRepository.findAll(Sort.by(Sort.Direction.ASC, "createdAt")).stream()
+                .map(productMapper::toResponse).toList();
 
     }
 }

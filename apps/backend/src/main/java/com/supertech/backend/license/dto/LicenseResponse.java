@@ -10,30 +10,30 @@ import lombok.Builder;
 
 @Builder
 public record LicenseResponse(
-                Long id,
-                String licenseNumber,
-                String licenseKey,
+        Long id,
+        String licenseNumber,
+        String licenseKey,
 
-                Long customerId,
-                String customerName,
+        Long customerId,
+        String customerName,
 
-                Long productId,
-                String productName,
+        Long productId,
+        String productName,
 
-                Long planId,
-                String planName,
+        Long planId,
+        String planName,
 
-                LicenseType type,
-                LicenseStatus status,
+        LicenseType type,
+        LicenseStatus status,
 
-                LocalDate issueDate,
-                LocalDate activationDate,
-                LocalDate expiryDate,
+        LocalDate issueDate,
+        LocalDateTime activationDate,
+        LocalDate expiryDate,
 
-                String machineFingerprint,
-                String licenseFileName,
+        String machineFingerprint,
+        String licenseFileName,
 
-                LocalDateTime createdAt,
-                LocalDateTime updatedAt) {
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt) {
 
 }

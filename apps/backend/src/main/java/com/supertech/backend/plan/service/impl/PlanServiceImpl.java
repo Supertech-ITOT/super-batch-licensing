@@ -3,6 +3,7 @@ package com.supertech.backend.plan.service.impl;
 import java.util.List;
 
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,13 +50,17 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public void delete(Long id) {
         Plans plans = planRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Plan not found"));
+        if (!plans.getCanDelete()) {
+            throw new BadRequestException("This plan cannot be deleted");
+        }
         planRepository.delete(plans);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<PlanResponse> getAll() {
-        return planRepository.findAll().stream().map(planMapper::toResponse).toList();
+        return planRepository.findAll(Sort.by(Sort.Direction.ASC, "createdAt")).stream().map(planMapper::toResponse)
+                .toList();
 
     }
 

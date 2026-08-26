@@ -18,94 +18,107 @@ import com.supertech.backend.user.entity.Users;
 
 @Component
 public class LicenseMapper {
-    public License toEntity(CreateLicenseRequest request, Customers customer, Products products, Users createdBy,
-            Plans plan) {
-        String licenseNumber = generateLicenseNumber();
-        return License.builder()
-                .licenseNumber(licenseNumber)
-                .licenseKey(UUID.randomUUID().toString())
-                .product(products)
-                .customers(customer)
-                .plans(plan)
-                .type(request.type())
-                .status(LicenseStatus.ACTIVE)
-                .issueDate(LocalDate.now())
-                .expiryDate(request.expiryDate())
-                .machineFingerprint(request.machineFingerprint())
-                .licenseFileName(licenseNumber + ".lic")
-                .createdBy(createdBy)
-                .build();
+        public License toEntity(CreateLicenseRequest request, Customers customer, Products products, Users createdBy,
+                        Plans plan) {
+                String licenseNumber = generateLicenseNumber();
+                return License.builder()
+                                .licenseNumber(licenseNumber)
+                                .licenseKey(UUID.randomUUID().toString())
+                                .product(products)
+                                .customers(customer)
+                                .plans(plan)
+                                .type(request.type())
+                                .status(LicenseStatus.ACTIVE)
+                                .issueDate(LocalDate.now())
+                                .expiryDate(request.expiryDate())
+                                .machineFingerprint(request.machineFingerprint())
+                                .licenseFileName(licenseNumber + ".lic")
+                                .createdBy(createdBy)
+                                .build();
 
-    }
+        }
 
-    public void updateEntity(UpadteLicenseRequest request, License license) {
+        public void updateEntity(UpadteLicenseRequest request, License license) {
 
-        license.setStatus(request.status());
-        license.setExpiryDate(request.expiryDate());
-        license.setMachineFingerprint(request.machineFingerprint());
-    }
+                license.setStatus(request.status());
+                license.setExpiryDate(request.expiryDate());
+                license.setMachineFingerprint(request.machineFingerprint());
+        }
 
-    public LicenseResponse toResponse(License license) {
+        public LicenseResponse toResponse(License license) {
 
-        return LicenseResponse.builder()
-                .id(license.getId())
+                return LicenseResponse.builder()
+                                .id(license.getId())
 
-                .licenseNumber(license.getLicenseNumber())
-                .licenseKey(license.getLicenseKey())
+                                .licenseNumber(license.getLicenseNumber())
+                                .licenseKey(license.getLicenseKey())
 
-                .customerId(license.getCustomers().getId())
-                .customerName(license.getCustomers().getCompanyName())
+                                .customerId(license.getCustomers().getId())
+                                .customerName(license.getCustomers().getCompanyName())
 
-                .productId(
-                        license.getProduct() != null
-                                ? license.getProduct().getId()
-                                : null)
-                .productName(
-                        license.getProduct() != null
-                                ? license.getProduct().getName()
-                                : null)
+                                .productId(
+                                                license.getProduct() != null
+                                                                ? license.getProduct().getId()
+                                                                : null)
+                                .productName(
+                                                license.getProduct() != null
+                                                                ? license.getProduct().getName()
+                                                                : null)
 
-                .planId(license.getPlans().getId())
-                .planName(license.getPlans().getName())
+                                .planId(
+                                                license.getPlans() != null
+                                                                ? license.getPlans().getId()
+                                                                : null)
+                                .planName(
+                                                license.getPlans() != null
+                                                                ? license.getPlans().getName()
+                                                                : null)
 
-                .type(license.getType())
-                .status(license.getStatus())
+                                .type(license.getType())
+                                .status(license.getStatus())
 
-                .issueDate(license.getIssueDate())
-                .activationDate(license.getActivationDate())
-                .expiryDate(license.getExpiryDate())
+                                .issueDate(license.getIssueDate())
+                                .activationDate(license.getActivationDate())
+                                .expiryDate(license.getExpiryDate())
 
-                .machineFingerprint(license.getMachineFingerprint())
-                .licenseFileName(license.getLicenseFileName())
+                                .machineFingerprint(license.getMachineFingerprint())
+                                .licenseFileName(license.getLicenseFileName())
 
-                .createdAt(license.getCreatedAt())
-                .updatedAt(license.getUpdatedAt())
-                .build();
-    }
+                                .createdAt(license.getCreatedAt())
+                                .updatedAt(license.getUpdatedAt())
+                                .build();
+        }
 
-    private String generateLicenseNumber() {
-        return "LIC-" + UUID.randomUUID()
-                .toString()
-                .substring(0, 8)
-                .toUpperCase();
-    }
+        private String generateLicenseNumber() {
+                return "LIC-" + UUID.randomUUID()
+                                .toString()
+                                .substring(0, 8)
+                                .toUpperCase();
+        }
 
-    public TrialLicenseResponse toTrialResponse(
-            License license,
-            byte[] licenseFile) {
+        public TrialLicenseResponse toTrialResponse(
+                        License license,
+                        byte[] licenseFile) {
 
-        return new TrialLicenseResponse(
-                license.getLicenseNumber(),
-                license.getLicenseKey(),
-                license.getType(),
-                license.getStatus(),
-                license.getIssueDate(),
-                license.getActivationDate(),
-                license.getExpiryDate(),
-                license.getMachineFingerprint(),
-                license.getLicenseFileName(),
-                license.getProduct().getId(),
-                licenseFile);
-    }
+                return TrialLicenseResponse.builder()
+                                .licenseNumber(license.getLicenseNumber())
+                                .customerName(license.getCustomers().getName())
+                                .companyName(license.getCustomers().getCompanyName())
+                                .planId(license.getPlans().getId())
+                                .planMaxUser(license.getPlans().getMaxUsers())
+                                .planName(license.getPlans().getName())
+                                .planDescription(license.getPlans().getDescription())
+                                .licenseKey(license.getLicenseKey())
+                                .type(license.getType())
+                                .status(license.getStatus())
+                                .issueDate(license.getIssueDate())
+                                .activationDate(license.getActivationDate())
+                                .expiryDate(license.getExpiryDate())
+                                .machineFingerprint(license.getMachineFingerprint())
+                                .licenseFileName(license.getLicenseFileName())
+                                .productId(license.getProduct().getId())
+                                .licenseFile(licenseFile)
+                                .build();
+        }
 
 }

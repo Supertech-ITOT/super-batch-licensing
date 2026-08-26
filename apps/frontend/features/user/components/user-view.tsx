@@ -41,7 +41,7 @@ export default function UserView() {
       <DataTable
         columns={columns(setDialog)}
         data={users}
-        pageSize={10}
+        pageSize={15}
         toolbar={(table) => (
           <div className="flex items-center gap-2">
             <DataTableSearch

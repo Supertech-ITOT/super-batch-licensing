@@ -94,7 +94,7 @@ public class LicenseServiceImpl implements LicenseService {
         @Override
         public List<LicenseResponse> getAll() {
                 return licenseRepository.findAll(
-                                Sort.by(Sort.Direction.DESC, "createdAt"))
+                                Sort.by(Sort.Direction.ASC, "createdAt"))
                                 .stream()
                                 .map(licenseMapper::toResponse)
                                 .toList();
@@ -117,12 +117,15 @@ public class LicenseServiceImpl implements LicenseService {
 
                 Products product = productRepository.findById(request.productId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+                Plans plans = planRepository.findByCode("TRIAL")
+                                .orElseThrow(() -> new ResourceNotFoundException("Trial plans not found"));
 
                 licenseValidationService.validateTrial(customer, product);
 
                 License license = licenseFactory.createTrialLicense(
                                 customer,
                                 product,
+                                plans,
                                 request.machineFingerprint());
 
                 String signature = licenseSigningService.generateSignature(license);

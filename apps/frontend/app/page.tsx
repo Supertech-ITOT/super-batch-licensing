@@ -32,7 +32,7 @@ export default function Home() {
         />
       </div>
       <div className="xl:flex hidden flex-1 flex-col ">
-        <div className="relative z-10 flex flex-col h-full px-10 pt-10">
+        <div className="relative z-10 flex flex-col h-full px-10 pt-20">
           <div className="flex z-10 select-none">
             <Image
               src="/superbatch-light.png"
@@ -42,7 +42,7 @@ export default function Home() {
               height={100}
               draggable={false}
               sizes="(max-width: 768px) 320px, 640px"
-              className="h-auto w-auto object-contain dark:hidden"
+              className="h-auto w-150 object-contain dark:hidden"
             />
             <Image
               src="/superbatch-dark.png"
