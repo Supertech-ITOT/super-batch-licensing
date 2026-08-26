@@ -1,6 +1,7 @@
 package com.supertech.backend.license.service.impl;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.core.io.ByteArrayResource;
@@ -16,11 +17,14 @@ import com.supertech.backend.customer.entity.Customers;
 import com.supertech.backend.customer.repository.CustomerRepository;
 import com.supertech.backend.customer.service.CustomerService;
 import com.supertech.backend.license.dto.CreateLicenseRequest;
+import com.supertech.backend.license.dto.LicenseActivationRequest;
+import com.supertech.backend.license.dto.LicenseActivationResponse;
 import com.supertech.backend.license.dto.LicenseResponse;
 import com.supertech.backend.license.dto.TrialLicenseRequest;
 import com.supertech.backend.license.dto.TrialLicenseResponse;
 import com.supertech.backend.license.dto.UpadteLicenseRequest;
 import com.supertech.backend.license.entity.License;
+import com.supertech.backend.license.enums.LicenseStatus;
 import com.supertech.backend.license.mapper.LicenseMapper;
 import com.supertech.backend.license.repository.LicenseRepository;
 import com.supertech.backend.license.service.LicenseFileService;
@@ -103,38 +107,6 @@ public class LicenseServiceImpl implements LicenseService {
                 License license = licenseRepository.findById(id)
                                 .orElseThrow(() -> new ResourceNotFoundException("License not found"));
                 return licenseMapper.toResponse(license);
-        }
-
-        @Override
-        @Transactional
-        public TrialLicenseResponse getTrialLicense(TrialLicenseRequest request) {
-                Customers customer = customerService.findOrCreate(
-                                request.email(),
-                                request.name(),
-                                request.companyName());
-
-                Products product = productRepository.findById(request.productId())
-                                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-                Plans plans = planRepository.findByCode("TRIAL")
-                                .orElseThrow(() -> new ResourceNotFoundException("Trial plans not found"));
-
-                licenseValidationService.validateTrial(customer, product);
-
-                License license = licenseMapper.createTrialLicense(
-                                customer,
-                                product,
-                                plans,
-                                request.machineFingerprint());
-
-                String signature = licenseSigningService.generateSignature(license);
-
-                license.setSignature(signature);
-
-                License savedLicense = licenseRepository.save(license);
-
-                byte[] licenseFile = licenseFileService.generateLicenseFile(savedLicense);
-                return licenseMapper.toTrialResponse(savedLicense, licenseFile);
-
         }
 
         @Override
@@ -252,5 +224,89 @@ public class LicenseServiceImpl implements LicenseService {
                         throw new IllegalStateException(
                                         "Failed to send license file email", e);
                 }
+        }
+
+        @Override
+        @Transactional
+        public TrialLicenseResponse activateTrial(TrialLicenseRequest request) {
+                Customers customer = customerService.findOrCreate(
+                                request.email(),
+                                request.name(),
+                                request.companyName());
+
+                Products product = productRepository.findById(request.productId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+                Plans plans = planRepository.findByCode("TRIAL")
+                                .orElseThrow(() -> new ResourceNotFoundException("Trial plans not found"));
+
+                licenseValidationService.validateTrial(customer, product);
+                License license = licenseMapper.createTrialLicense(
+                                customer,
+                                product,
+                                plans,
+                                request.machineFingerprint());
+
+                String signature = licenseSigningService.generateSignature(license);
+                license.setSignature(signature);
+                License savedLicense = licenseRepository.save(license);
+                byte[] licenseFile = licenseFileService.generateLicenseFile(savedLicense);
+                return licenseMapper.toTrialResponse(savedLicense, licenseFile);
+
+        }
+
+        @Override
+        public LicenseActivationResponse activateLicense(LicenseActivationRequest request) {
+
+                License license = licenseRepository.findByLicenseKey(request.licenseKey())
+                                .orElseThrow(() -> new BadRequestException("Invalid license key"));
+
+                // Check product
+                if (!license.getProduct().getId().equals(request.productId())) {
+                        throw new BadRequestException(
+                                        "This license does not belong to the selected product");
+                }
+
+                // Check expiry
+                if (license.getExpiryDate() != null
+                                && license.getExpiryDate().isBefore(LocalDate.now())) {
+
+                        license.setStatus(LicenseStatus.EXPIRED);
+                        licenseRepository.save(license);
+
+                        throw new BadRequestException("License has expired");
+                }
+
+                // Check blocked statuses
+                if (license.getStatus() == LicenseStatus.REVOKED
+                                || license.getStatus() == LicenseStatus.EXPIRED) {
+
+                        throw new BadRequestException(
+                                        "License cannot be activated. Status: " + license.getStatus());
+                }
+
+                // If already activated, don't allow another machine
+                if (license.getStatus() == LicenseStatus.ACTIVE
+                                && license.getMachineFingerprint() != null
+                                && !license.getMachineFingerprint()
+                                                .equals(request.machineFingerprint())) {
+
+                        throw new BadRequestException(
+                                        "License is already activated on another machine");
+                }
+                // Activate only if inactive
+                if (license.getStatus() == LicenseStatus.INACTIVE) {
+
+                        license.setStatus(LicenseStatus.ACTIVE);
+                        license.setActivationDate(LocalDate.now());
+                        license.setMachineFingerprint(request.machineFingerprint());
+
+                        license = licenseRepository.save(license);
+                }
+
+                byte[] licenseFile = licenseFileService.generateLicenseFile(license);
+
+                return licenseMapper.toLicenseActivationResponse(
+                                license,
+                                licenseFile);
         }
 }

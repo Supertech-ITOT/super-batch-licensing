@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 import com.supertech.backend.customer.entity.Customers;
 import com.supertech.backend.license.dto.CreateLicenseRequest;
+import com.supertech.backend.license.dto.LicenseActivationResponse;
 import com.supertech.backend.license.dto.LicenseResponse;
 import com.supertech.backend.license.dto.TrialLicenseResponse;
 import com.supertech.backend.license.dto.UpadteLicenseRequest;
@@ -38,7 +39,8 @@ public class LicenseMapper {
                                 .customers(customer)
                                 .plans(plan)
                                 .type(request.type())
-                                .status(LicenseStatus.ACTIVE)
+                                .status(request.type() == LicenseType.OFFLINE ? LicenseStatus.ACTIVE
+                                                : LicenseStatus.INACTIVE)
                                 .activationDate(activationDate)
                                 .issueDate(issueDate)
                                 .expiryDate(expiryDate)
@@ -87,11 +89,32 @@ public class LicenseMapper {
                                 .toUpperCase();
         }
 
-        public TrialLicenseResponse toTrialResponse(
-                        License license,
-                        byte[] licenseFile) {
-
+        public TrialLicenseResponse toTrialResponse(License license, byte[] licenseFile) {
                 return TrialLicenseResponse.builder()
+                                .licenseNumber(license.getLicenseNumber())
+                                .customerName(license.getCustomers().getName())
+                                .companyName(license.getCustomers().getCompanyName())
+                                .planId(license.getPlans().getId())
+                                .planMaxUser(license.getPlans().getMaxUsers())
+                                .planName(license.getPlans().getName())
+                                .planDescription(license.getPlans().getDescription())
+                                .licenseKey(license.getLicenseKey())
+                                .customerEmail(license.getCustomers().getEmail())
+                                .type(license.getType())
+                                .status(license.getStatus())
+                                .issueDate(license.getIssueDate())
+                                .activationDate(license.getActivationDate())
+                                .expiryDate(license.getExpiryDate())
+                                .machineFingerprint(license.getMachineFingerprint())
+                                .licenseFileName(license.getLicenseFileName())
+                                .productId(license.getProduct().getId())
+                                .signature(license.getSignature())
+                                .licenseFile(licenseFile)
+                                .build();
+        }
+
+        public LicenseActivationResponse toLicenseActivationResponse(License license, byte[] licenseFile) {
+                return LicenseActivationResponse.builder()
                                 .licenseNumber(license.getLicenseNumber())
                                 .customerName(license.getCustomers().getName())
                                 .companyName(license.getCustomers().getCompanyName())

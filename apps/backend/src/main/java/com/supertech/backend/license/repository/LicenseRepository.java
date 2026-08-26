@@ -1,5 +1,7 @@
 package com.supertech.backend.license.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.supertech.backend.license.entity.License;
@@ -12,4 +14,6 @@ public interface LicenseRepository extends JpaRepository<License, Long> {
             Long productId);
 
     boolean existsByLicenseNumber(String licenseNumber);
+
+    Optional<License> findByLicenseKey(String licenseKey);
 }

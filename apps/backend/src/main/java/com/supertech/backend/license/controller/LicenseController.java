@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.supertech.backend.common.dto.ApiResponse;
 import com.supertech.backend.license.dto.CreateLicenseRequest;
+import com.supertech.backend.license.dto.LicenseActivationRequest;
+import com.supertech.backend.license.dto.LicenseActivationResponse;
 import com.supertech.backend.license.dto.LicenseResponse;
 import com.supertech.backend.license.dto.TrialLicenseRequest;
 import com.supertech.backend.license.dto.TrialLicenseResponse;
@@ -70,11 +72,19 @@ public class LicenseController {
     }
 
     @PostMapping("/trial")
-    public ResponseEntity<ApiResponse<TrialLicenseResponse>> createTrial(
+    public ResponseEntity<ApiResponse<TrialLicenseResponse>> activateTrial(
             @Valid @RequestBody TrialLicenseRequest request) {
 
-        TrialLicenseResponse res = licenseService.getTrialLicense(request);
+        TrialLicenseResponse res = licenseService.activateTrial(request);
         return ResponseEntity.ok(ApiResponse.success("Trial License created successfully", res));
+    }
+
+    @PostMapping("/activate")
+    public ResponseEntity<ApiResponse<LicenseActivationResponse>> activateLicense(
+            @Valid @RequestBody LicenseActivationRequest request) {
+
+        LicenseActivationResponse res = licenseService.activateLicense(request);
+        return ResponseEntity.ok(ApiResponse.success("License activated successfully", res));
     }
 
     @GetMapping("/{id}/download-key")

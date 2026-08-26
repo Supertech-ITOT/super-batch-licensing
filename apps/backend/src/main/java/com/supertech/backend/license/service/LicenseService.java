@@ -3,6 +3,8 @@ package com.supertech.backend.license.service;
 import java.util.List;
 
 import com.supertech.backend.license.dto.CreateLicenseRequest;
+import com.supertech.backend.license.dto.LicenseActivationRequest;
+import com.supertech.backend.license.dto.LicenseActivationResponse;
 import com.supertech.backend.license.dto.LicenseResponse;
 import com.supertech.backend.license.dto.TrialLicenseRequest;
 import com.supertech.backend.license.dto.TrialLicenseResponse;
@@ -19,7 +21,9 @@ public interface LicenseService {
 
     LicenseResponse getById(Long id);
 
-    TrialLicenseResponse getTrialLicense(TrialLicenseRequest request);
+    TrialLicenseResponse activateTrial(TrialLicenseRequest request);
+
+    LicenseActivationResponse activateLicense(LicenseActivationRequest request);
 
     byte[] downloadLicenseKey(Long licenseId);
 
