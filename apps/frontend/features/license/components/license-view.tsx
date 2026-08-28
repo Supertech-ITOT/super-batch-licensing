@@ -11,9 +11,10 @@ import { columns } from "./columns";
 import CreateLicenseDialog from "./create-license-dialog";
 import UpdateLicenseDialog from "./update-license-dialog";
 import DeleteLicenseDialog from "./delete-license-dialog";
+import ChangeMachineLicenseDialog from "./changeMachine-license-dialog";
 
 export type DialogProp = {
-  action: "create" | "edit" | "delete" | null;
+  action: "create" | "edit" | "delete" | "change-machine" | null;
   id: number | null;
   open: boolean;
 };
@@ -66,6 +67,13 @@ export default function LicenseView() {
         <>
           {dialog.action === "create" && (
             <CreateLicenseDialog open onClose={closeDialog} />
+          )}
+          {dialog.action === "change-machine" && dialog.id != null && (
+            <ChangeMachineLicenseDialog
+              open={dialog.open}
+              onClose={closeDialog}
+              licenseId={dialog.id}
+            />
           )}
           {dialog.action === "edit" && dialog.id != null && (
             <UpdateLicenseDialog

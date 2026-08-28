@@ -16,6 +16,7 @@ import com.supertech.backend.common.exception.ResourceNotFoundException;
 import com.supertech.backend.customer.entity.Customers;
 import com.supertech.backend.customer.repository.CustomerRepository;
 import com.supertech.backend.customer.service.CustomerService;
+import com.supertech.backend.license.dto.ChangeMachineRequest;
 import com.supertech.backend.license.dto.CreateLicenseRequest;
 import com.supertech.backend.license.dto.LicenseActivationRequest;
 import com.supertech.backend.license.dto.LicenseActivationResponse;
@@ -30,6 +31,7 @@ import com.supertech.backend.license.repository.LicenseRepository;
 import com.supertech.backend.license.service.LicenseFileService;
 import com.supertech.backend.license.service.LicenseService;
 import com.supertech.backend.license.service.LicenseSigningService;
+import com.supertech.backend.license.service.MachineFingerprintService;
 import com.supertech.backend.license.validation.LicenseValidationService;
 import com.supertech.backend.plan.entity.Plans;
 import com.supertech.backend.plan.repository.PlanRepository;
@@ -57,6 +59,7 @@ public class LicenseServiceImpl implements LicenseService {
         private final ProductRepository productRepository;
         private final CustomerService customerService;
         private final JavaMailSender mailSender;
+        private final MachineFingerprintService machineFingerprintService;
 
         @Override
         @Transactional
@@ -255,6 +258,7 @@ public class LicenseServiceImpl implements LicenseService {
         }
 
         @Override
+        @Transactional
         public LicenseActivationResponse activateLicense(LicenseActivationRequest request) {
 
                 License license = licenseRepository.findByLicenseKey(request.licenseKey())
@@ -299,7 +303,8 @@ public class LicenseServiceImpl implements LicenseService {
                         license.setStatus(LicenseStatus.ACTIVE);
                         license.setActivationDate(LocalDate.now());
                         license.setMachineFingerprint(request.machineFingerprint());
-
+                        String signature = licenseSigningService.generateSignature(license);
+                        license.setSignature(signature);
                         license = licenseRepository.save(license);
                 }
 
@@ -308,5 +313,19 @@ public class LicenseServiceImpl implements LicenseService {
                 return licenseMapper.toLicenseActivationResponse(
                                 license,
                                 licenseFile);
+        }
+
+        @Override
+        @Transactional
+        public void changeMachine(Long id, ChangeMachineRequest request) {
+
+                License license = licenseRepository.findById(id)
+                                .orElseThrow(() -> new ResourceNotFoundException("License not found with id: " + id));
+
+                String machineFingerprint = machineFingerprintService.sha256(request.machineFingerprint());
+                license.setMachineFingerprint(machineFingerprint);
+                String signature = licenseSigningService.generateSignature(license);
+                license.setSignature(signature);
+                licenseRepository.save(license);
         }
 }

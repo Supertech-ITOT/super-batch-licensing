@@ -1,11 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "../../common/query-keys";
 import {
+  changeMachine,
   create,
   downloadLicenseFile,
   downloadLicenseKey,
   getAll,
   getById,
+  getLicenseStatus,
   getLicenseTypes,
   remove,
   sendLicenseFile,
@@ -84,6 +86,15 @@ export const useGetLicenseTypes = () => {
     },
   });
 };
+export const useGetLicenseStatus = () => {
+  return useQuery({
+    queryKey: ["license-status"],
+    queryFn: async () => {
+      const res = await getLicenseStatus();
+      return res.data;
+    },
+  });
+};
 
 export const useDownloadLicenseKey = () => {
   return useMutation({
@@ -106,5 +117,17 @@ export const useSendLicenseKey = () => {
 export const useSendLicenseFile = () => {
   return useMutation({
     mutationFn: sendLicenseFile,
+  });
+};
+
+export const useChangeMachine = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: changeMachine,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.licenses,
+      });
+    },
   });
 };

@@ -3,6 +3,7 @@
 import { LicenseResponse } from "../types/license.types";
 import { DialogProp } from "./license-view";
 import {
+  useChangeMachine,
   useDownloadLicenseFile,
   useSendLicenseFile,
   useSendLicenseKey,
@@ -24,6 +25,7 @@ import { Button } from "@/common/components/ui/button";
 import {
   Download,
   Edit3Icon,
+  Fingerprint,
   Mail,
   MoreHorizontal,
   Trash2,
@@ -119,6 +121,21 @@ export default function LicenseActions({ license, setDialog }: Props) {
         >
           <Edit3Icon className="mr-2 h-4 w-4" />
           Edit
+        </DropdownMenuItem>
+        {/* ChangeMachine   */}
+        <DropdownMenuItem
+          onClick={(e) => {
+            e.stopPropagation();
+
+            setDialog({
+              action: "change-machine",
+              id: license.id,
+              open: true,
+            });
+          }}
+        >
+          <Fingerprint className="mr-2 h-4 w-4" />
+          Change Machine
         </DropdownMenuItem>
 
         {/* Download */}

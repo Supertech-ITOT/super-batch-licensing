@@ -2,6 +2,7 @@ package com.supertech.backend.license.service;
 
 import java.util.List;
 
+import com.supertech.backend.license.dto.ChangeMachineRequest;
 import com.supertech.backend.license.dto.CreateLicenseRequest;
 import com.supertech.backend.license.dto.LicenseActivationRequest;
 import com.supertech.backend.license.dto.LicenseActivationResponse;
@@ -32,4 +33,6 @@ public interface LicenseService {
     void sendLicenseKey(Long licenseId);
 
     void sendLicenseFile(Long licenseId);
+
+    void changeMachine(Long id, ChangeMachineRequest request);
 };

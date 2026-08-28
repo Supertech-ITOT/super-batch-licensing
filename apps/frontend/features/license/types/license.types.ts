@@ -51,3 +51,7 @@ export interface DownloadLicenseKeyResponse {
   blob: Blob;
   fileName: string;
 }
+
+export interface ChangeMachineRequest {
+  machineFingerprint: string;
+}

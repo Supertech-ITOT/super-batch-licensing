@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.supertech.backend.common.dto.ApiResponse;
 import com.supertech.backend.common.dto.OptionDto;
 import com.supertech.backend.common.util.EnumUtil;
+import com.supertech.backend.license.enums.LicenseStatus;
 import com.supertech.backend.license.enums.LicenseType;
 
 @RestController
@@ -25,6 +26,16 @@ public class MetadataController {
                 type.name()))
                 .toList();
         return ResponseEntity.ok(ApiResponse.success("License types fetched successfully", data));
+
+    }
+
+    @GetMapping("/license-status")
+    public ResponseEntity<ApiResponse<List<OptionDto>>> getLicenseStatus() {
+        List<OptionDto> data = Arrays.stream(LicenseStatus.values()).map(type -> new OptionDto(
+                EnumUtil.formatLabel(type.name()),
+                type.name()))
+                .toList();
+        return ResponseEntity.ok(ApiResponse.success("License status fetched successfully", data));
 
     }
 

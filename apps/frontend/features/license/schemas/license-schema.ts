@@ -71,3 +71,12 @@ export const licenseIdSchema = z.object({
 });
 
 export type LicenseIdSchema = z.infer<typeof licenseIdSchema>;
+
+export const changeMachineSchema = z.object({
+  machineFingerprint: z.string().min(1, "Machine fingerprint is required"),
+});
+
+export type ChangeMachineSchema = z.infer<typeof changeMachineSchema>;
+export const changeMachineDefaultValues: ChangeMachineSchema = {
+  machineFingerprint: "",
+};

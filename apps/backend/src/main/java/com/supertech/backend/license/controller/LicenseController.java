@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.supertech.backend.common.dto.ApiResponse;
+import com.supertech.backend.license.dto.ChangeMachineRequest;
 import com.supertech.backend.license.dto.CreateLicenseRequest;
 import com.supertech.backend.license.dto.LicenseActivationRequest;
 import com.supertech.backend.license.dto.LicenseActivationResponse;
@@ -127,6 +128,14 @@ public class LicenseController {
     public ResponseEntity<ApiResponse<String>> getPublicKey() throws Exception {
         String publicKey = PublicKeyGenerator.generatePublicKey(licensePrivateKey);
         return ResponseEntity.ok(ApiResponse.success("Public key generated successfully", publicKey));
+    }
+
+    @PutMapping("/{id}/machine")
+    public ResponseEntity<ApiResponse<Void>> changeMachine(@PathVariable Long id,
+            @Valid @RequestBody ChangeMachineRequest request) {
+        licenseService.changeMachine(id, request);
+        return ResponseEntity.ok(ApiResponse.success("Machine updated successfully", null));
+
     }
 
 }

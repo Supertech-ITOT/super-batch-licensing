@@ -52,10 +52,8 @@ public class LicenseMapper {
         }
 
         public void updateEntity(UpadteLicenseRequest request, License license) {
-                String machineFingerprint = machineFingerprintService.sha256(request.machineFingerprint());
                 license.setStatus(request.status());
-                license.setExpiryDate(request.expiryDate());
-                license.setMachineFingerprint(machineFingerprint);
+
         }
 
         public LicenseResponse toResponse(License license) {

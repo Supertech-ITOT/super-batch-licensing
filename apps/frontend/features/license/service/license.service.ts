@@ -1,5 +1,6 @@
 import { ApiResponse } from "@/common/types/api.types";
 import {
+  ChangeMachineRequest,
   CreateLicenseRequest,
   LicenseResponse,
   UpdateLicenseRequest,
@@ -48,6 +49,12 @@ export const getLicenseTypes = async () => {
   );
   return res.data;
 };
+export const getLicenseStatus = async () => {
+  const res = await api.get<ApiResponse<OptionDto[]>>(
+    "/metadata/license-status",
+  );
+  return res.data;
+};
 
 export const downloadLicenseKey = async (id: number) => {
   const res = await api.get(`/licenses/${id}/download-key`, {
@@ -72,5 +79,16 @@ export const sendLicenseKey = async (id: number) => {
 
 export const sendLicenseFile = async (id: number) => {
   const res = await api.post(`/licenses/${id}/send-file`);
+  return res.data;
+};
+
+export const changeMachine = async ({
+  id,
+  data,
+}: {
+  id: number;
+  data: ChangeMachineRequest;
+}) => {
+  const res = await api.put<ApiResponse<void>>(`/licenses/${id}/machine`, data);
   return res.data;
 };
