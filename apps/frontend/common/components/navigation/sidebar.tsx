@@ -74,7 +74,7 @@ export default function SideBar() {
                 );
               })}
             </div>
-            {/* Configuration */}
+            {/* Configuration
             {open && (
               <div className="mt-10 ">
                 <h1 className="font-semibold text-sm uppercase">
@@ -97,7 +97,7 @@ export default function SideBar() {
                   </Link>
                 );
               })}
-            </div>
+            </div> */}
 
             {/* User Section */}
             <div className="mt-auto p-2">

@@ -4,7 +4,6 @@ import {
   Package,
   KeyRound,
   LucideIcon,
-  Settings,
   Boxes,
 } from "lucide-react";
 
@@ -78,12 +77,12 @@ export const OperationRoutes: RouteType[] = [
 ];
 
 export const ConfigurationRoutes: RouteType[] = [
-  {
-    label: "Settings",
-    short: "Settings",
-    path: "/Setting",
-    icon: Settings,
-    description:
-      "Configure system preferences, application settings, and defaults.",
-  },
+  // {
+  //   label: "Settings",
+  //   short: "Settings",
+  //   path: "/Setting",
+  //   icon: Settings,
+  //   description:
+  //     "Configure system preferences, application settings, and defaults.",
+  // },
 ];
