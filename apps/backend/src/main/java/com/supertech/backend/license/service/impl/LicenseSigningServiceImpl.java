@@ -40,7 +40,7 @@ public class LicenseSigningServiceImpl implements LicenseSigningService {
                                                         .planId(license.getPlans().getId())
                                                         .planName(license.getPlans().getName())
                                                         .planDescription(license.getPlans().getDescription())
-                                                        .planMaxUsers(license.getPlans().getMaxUsers())
+                                                        .planMaxUnits(license.getPlans().getMaxUnits())
                                                         .productId(license.getProduct().getId())
                                                         .build());
 

@@ -9,25 +9,25 @@ import lombok.Builder;
 
 @Builder
 public record LicenseActivationResponse(
-                String licenseNumber,
-                String customerName,
-                String companyName,
-                Long planId,
-                Integer planMaxUser,
-                String planName,
-                String planDescription,
-                String licenseKey,
-                String customerEmail,
-                LicenseType type,
-                LicenseStatus status,
-                LocalDate issueDate,
-                LocalDate activationDate,
-                LocalDate expiryDate,
-                String machineFingerprint,
-                String licenseFileName,
-                Long productId,
-                String signature,
-                byte[] licenseFile
+        String licenseNumber,
+        String customerName,
+        String companyName,
+        Long planId,
+        Integer planMaxUnits,
+        String planName,
+        String planDescription,
+        String licenseKey,
+        String customerEmail,
+        LicenseType type,
+        LicenseStatus status,
+        LocalDate issueDate,
+        LocalDate activationDate,
+        LocalDate expiryDate,
+        String machineFingerprint,
+        String licenseFileName,
+        Long productId,
+        String signature,
+        byte[] licenseFile
 
 ) {
 

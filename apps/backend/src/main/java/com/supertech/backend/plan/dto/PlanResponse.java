@@ -6,14 +6,14 @@ import lombok.Builder;
 
 @Builder
 public record PlanResponse(
-                Long id,
-                String name,
-                String code,
-                String description,
-                Integer durationMonths,
-                Integer maxUsers,
-                Integer price,
-                LocalDateTime createdAt,
-                LocalDateTime updatedAt) {
+        Long id,
+        String name,
+        String code,
+        String description,
+        Integer durationMonths,
+        Integer maxUnits,
+        Integer price,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt) {
 
 }

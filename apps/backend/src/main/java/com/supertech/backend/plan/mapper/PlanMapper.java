@@ -15,7 +15,7 @@ public class PlanMapper {
                 .code(requset.code())
                 .description(requset.description())
                 .durationMonths(requset.durationMonths())
-                .maxUsers(requset.maxUsers())
+                .maxUnits(requset.maxUnits())
                 .price(requset.price())
                 .build();
     }
@@ -25,7 +25,7 @@ public class PlanMapper {
         plans.setCode(request.code());
         plans.setDescription(request.description());
         plans.setDurationMonths(request.durationMonths());
-        plans.setMaxUsers(request.maxUsers());
+        plans.setMaxUnits(request.maxUnits());
         plans.setPrice(request.price());
     }
 
@@ -36,7 +36,7 @@ public class PlanMapper {
                 .code(plans.getCode())
                 .description(plans.getDescription())
                 .durationMonths(plans.getDurationMonths())
-                .maxUsers(plans.getMaxUsers())
+                .maxUnits(plans.getMaxUnits())
                 .price(plans.getPrice())
                 .createdAt(plans.getCreatedAt())
                 .updatedAt(plans.getUpdatedAt())

@@ -47,7 +47,7 @@ export default function UpdatePlanDialog({ open, onClose, planId }: Props) {
       code: plan.code,
       description: plan.description,
       durationMonths: plan.durationMonths,
-      maxUsers: plan.maxUsers,
+      maxUnits: plan.maxUnits,
       price: plan.price,
     });
   }, [plan, reset]);
@@ -138,11 +138,11 @@ export default function UpdatePlanDialog({ open, onClose, planId }: Props) {
             />
 
             <TextInput
-              label="Maximum Users"
+              label="Maximum Units"
               icon={Users}
               type="number"
               disabled={loading}
-              {...register("maxUsers", { valueAsNumber: true })}
+              {...register("maxUnits", { valueAsNumber: true })}
             />
           </div>
           <TextInput

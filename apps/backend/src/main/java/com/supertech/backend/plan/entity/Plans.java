@@ -25,7 +25,7 @@ public class Plans {
     private String code;
     private String description;
     private Integer durationMonths;
-    private Integer maxUsers;
+    private Integer maxUnits;
 
     @Builder.Default
     private Boolean canDelete = true;

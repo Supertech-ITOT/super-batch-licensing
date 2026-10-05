@@ -40,7 +40,7 @@ public class SystemInitializer implements CommandLineRunner {
                     .description("Temporaray Plans")
                     .canDelete(false)
                     .durationMonths(12)
-                    .maxUsers(5)
+                    .maxUnits(3)
                     .price(0)
                     .build();
             planRepository.save(plan);

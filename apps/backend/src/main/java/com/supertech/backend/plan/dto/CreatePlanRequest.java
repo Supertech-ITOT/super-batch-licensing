@@ -5,17 +5,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CreatePlanRequest(
-        @NotBlank(message = "Plan name is required") String name,
+                @NotBlank(message = "Plan name is required") String name,
 
-        @NotBlank(message = "Plan code is required") String code,
+                @NotBlank(message = "Plan code is required") String code,
 
-        String description,
+                String description,
 
-        @NotNull(message = "Duration is required") @Min(value = 1, message = "Duration must be at least 1 month") Integer durationMonths,
+                @NotNull(message = "Duration is required") @Min(value = 1, message = "Duration must be at least 1 month") Integer durationMonths,
 
-        @NotNull(message = "Maximum users is required") @Min(value = 1, message = "Maximum users must be at least 1") Integer maxUsers,
+                @NotNull(message = "Maximum units is required") @Min(value = 1, message = "Maximum units must be at least 1") Integer maxUnits,
 
-        @NotNull(message = "Price is required") @Min(value = 0, message = "Price cannot be negative") Integer price
+                @NotNull(message = "Price is required") @Min(value = 0, message = "Price cannot be negative") Integer price
 
 ) {
 

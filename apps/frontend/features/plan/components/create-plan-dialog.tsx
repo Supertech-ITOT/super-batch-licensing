@@ -122,11 +122,11 @@ export default function CreatePlanDialog({ open, onClose }: Props) {
             />
 
             <TextInput
-              label="Maximum Users"
+              label="Maximum Units"
               icon={Users}
               type="number"
               disabled={loading}
-              {...register("maxUsers", { valueAsNumber: true })}
+              {...register("maxUnits", { valueAsNumber: true })}
             />
           </div>
           <TextInput

@@ -63,12 +63,12 @@ export const columns = (
     },
   },
   {
-    accessorKey: "maxUsers",
-    header: "Max Users",
+    accessorKey: "maxUnits",
+    header: "Max Units",
     meta: {
       align: "center",
     },
-    cell: ({ row }) => row.original.maxUsers,
+    cell: ({ row }) => row.original.maxUnits,
   },
   {
     accessorKey: "price",

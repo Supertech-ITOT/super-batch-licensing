@@ -4,7 +4,7 @@ export interface PlanResponse {
   code: string;
   description: string | null;
   durationMonths: number;
-  maxUsers: number;
+  maxUnits: number;
   price: number;
   createdAt: string;
   updatedAt: string;
@@ -15,7 +15,7 @@ export interface CreatePlanRequest {
   code: string;
   description?: string;
   durationMonths: number;
-  maxUsers: number;
+  maxUnits: number;
   price: number;
 }
 
@@ -24,6 +24,6 @@ export interface UpdatePlanRequest {
   code: string;
   description?: string;
   durationMonths: number;
-  maxUsers: number;
+  maxUnits: number;
   price: number;
 }

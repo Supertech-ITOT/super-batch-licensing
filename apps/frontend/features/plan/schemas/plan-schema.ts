@@ -5,7 +5,7 @@ export const PlanSchemaLimit = {
   code: { min: 2, max: 50 },
   description: { max: 500 },
   durationMonths: { min: 1, max: 120 },
-  maxUsers: { min: 1, max: 100000 },
+  maxUnits: { min: 1, max: 100000 },
   price: { min: 0, max: 100000000 },
 } as const;
 
@@ -55,16 +55,16 @@ export const planSchema = z.object({
       `Duration cannot exceed ${PlanSchemaLimit.durationMonths.max} months`,
     ),
 
-  maxUsers: z
+  maxUnits: z
     .number()
     .int("Maximum users must be a whole number")
     .min(
-      PlanSchemaLimit.maxUsers.min,
-      `Maximum users must be at least ${PlanSchemaLimit.maxUsers.min}`,
+      PlanSchemaLimit.maxUnits.min,
+      `Maximum users must be at least ${PlanSchemaLimit.maxUnits.min}`,
     )
     .max(
-      PlanSchemaLimit.maxUsers.max,
-      `Maximum users cannot exceed ${PlanSchemaLimit.maxUsers.max}`,
+      PlanSchemaLimit.maxUnits.max,
+      `Maximum users cannot exceed ${PlanSchemaLimit.maxUnits.max}`,
     ),
 
   price: z
@@ -94,6 +94,6 @@ export const planDefaultValues: PlanSchema = {
   code: "",
   description: "",
   durationMonths: 1,
-  maxUsers: 1,
+  maxUnits: 1,
   price: 0,
 };

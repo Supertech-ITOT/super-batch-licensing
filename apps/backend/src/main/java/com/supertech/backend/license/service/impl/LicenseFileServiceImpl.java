@@ -29,7 +29,7 @@ public class LicenseFileServiceImpl implements LicenseFileService {
                                         .companyName(license.getCustomers().getCompanyName())
                                         .customerEmail(license.getCustomers().getEmail())
                                         .planId(license.getPlans().getId())
-                                        .planMaxUsers(license.getPlans().getMaxUsers())
+                                        .planMaxUnits(license.getPlans().getMaxUnits())
                                         .planName(license.getPlans().getName())
                                         .planDescription(license.getPlans().getDescription())
                                         .licenseKey(license.getLicenseKey())
