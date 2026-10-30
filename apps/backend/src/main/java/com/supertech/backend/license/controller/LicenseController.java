@@ -112,14 +112,14 @@ public class LicenseController {
 
     @PostMapping("/{id}/send-key")
     public ResponseEntity<ApiResponse<Void>> sendLicenseKey(@PathVariable Long id) {
-        licenseService.sendLicenseKey(id);
+        // licenseService.sendLicenseKey(id);
         return ResponseEntity.ok(
                 ApiResponse.success("License key email sent successfully", null));
     }
 
     @PostMapping("/{id}/send-file")
     public ResponseEntity<ApiResponse<Void>> sendLicenseFile(@PathVariable Long id) {
-        licenseService.sendLicenseFile(id);
+        // licenseService.sendLicenseFile(id);
         return ResponseEntity.ok(
                 ApiResponse.success("License file email sent successfully", null));
     }

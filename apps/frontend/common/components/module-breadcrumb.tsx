@@ -6,10 +6,11 @@ import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 
 const titleMap: Record<string, string> = {
-  Customers: "Customers",
-  Plans: "Plans",
-  Users: "Users",
-  Licenses: "Licenses",
+  customers: "Customers",
+  plans: "Plans",
+  user: "Users",
+  licenses: "Licenses",
+  products: "Products",
 };
 
 export function ModuleBreadcrumb() {
@@ -29,10 +30,7 @@ export function ModuleBreadcrumb() {
       {breadcrumbs.map(({ href, label, isLast }) => (
         <div key={href} className="flex items-center gap-0.5 sm:gap-1">
           <ChevronRight className="size-2 shrink-0 sm:size-3" />
-          <Link
-            href={href}
-            className={isLast ? "font-medium text-foreground" : ""}
-          >
+          <Link href={href} className={isLast ? "font-medium text-foreground" : ""}>
             {label}
           </Link>
         </div>

@@ -45,6 +45,9 @@ public class UserServiceImpl implements UserService {
     public void update(UpdateUserRequest request, Long id) {
         String email = request.email().toLowerCase();
         Users user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        if(user.isSystemAccount()){
+            throw new BadRequestException("You can update the Administrator.");
+        }
         if (!user.getEmail().equals(email) && userRepository.existsByEmail(email)) {
             throw new BadRequestException("Email already exists");
         }
@@ -70,6 +73,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long id) {
         Users user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        if(user.isSystemAccount()){
+            throw new BadRequestException("Cannot delete administrator.");
+        }
 
         userRepository.delete(user);
     }

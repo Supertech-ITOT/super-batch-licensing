@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.supertech</groupId>
-	<artifactId>backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>superbatch-licensing</artifactId>
+	<version>1.0.0</version>
 	<name/>
 	<description/>
 	<url/>
@@ -119,6 +119,7 @@
 	</dependencies>
 
 	<build>
+	 <finalName>superbatch-licensing</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

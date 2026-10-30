@@ -6,6 +6,7 @@ import { Toaster } from "../common/components/ui/sonner";
 import QueryProvider from "../common/providers/query-provider";
 import AuthGuardProvider from "@/common/providers/auth-guard-provider";
 import { SidebarProvider } from "@/common/components/navigation/sidebar-provider";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -13,16 +14,11 @@ export const metadata: Metadata = {
   title: "License Manager",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={cn("antialiased", "font-sans", inter.variable)}
-    >
+    <html lang="en" suppressHydrationWarning className={cn("antialiased", "font-sans", inter.variable)}>
       <body className="min-h-screen sm:h-screen sm:overflow-hidden">
+        <Script src="/config.js" strategy="beforeInteractive" />
         <QueryProvider>
           <AuthGuardProvider>
             <SidebarProvider>

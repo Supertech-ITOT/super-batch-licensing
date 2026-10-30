@@ -10,4 +10,5 @@ public interface PlanRepository extends JpaRepository<Plans, Long> {
     boolean existsByCode(String code);
 
     Optional<Plans> findByCode(String code);
+
 }

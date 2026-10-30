@@ -1,19 +1,14 @@
-package com.supertech.backend.common.initializer;
 
+package com.supertech.backend.common.initializer;
 import com.supertech.backend.product.entity.Products;
 import com.supertech.backend.product.repository.ProductRepository;
-
-import java.util.List;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
 import com.supertech.backend.plan.entity.Plans;
 import com.supertech.backend.plan.repository.PlanRepository;
 import com.supertech.backend.user.entity.Users;
 import com.supertech.backend.user.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -33,37 +28,39 @@ public class SystemInitializer implements CommandLineRunner {
     }
 
     private void seedPlan() {
-        if (planRepository.count() == 0) {
+        if (!planRepository.existsByCode("TRIAL")) {
             Plans plan = Plans.builder()
                     .name("Trial")
                     .code("TRIAL")
-                    .description("Temporaray Plans")
+                    .description("Temporary Plans")
                     .canDelete(false)
                     .durationMonths(12)
                     .maxUnits(3)
                     .price(0)
                     .build();
+
             planRepository.save(plan);
         }
-
     }
 
     private void seedUser() {
-        if (userRepository.count() == 0) {
+        String email = "itotsoftware@supertech.co.in";
+
+        if (!userRepository.existsByEmail(email)) {
             Users admin = Users.builder()
                     .name("Administrator")
-                    .email("itotsoftware@supertech.co.in")
+                    .email(email)
                     .password(passwordEncoder.encode("Super@123"))
                     .systemAccount(true)
                     .build();
+
             userRepository.save(admin);
         }
     }
 
     private void seedProduct() {
 
-        if (productRepository.count() == 0) {
-
+        if (!productRepository.existsByCode("SUPER_BATCH")) {
             Products superBatch = Products.builder()
                     .name("Super Batch")
                     .code("SUPER_BATCH")
@@ -71,6 +68,10 @@ public class SystemInitializer implements CommandLineRunner {
                     .canDelete(false)
                     .build();
 
+            productRepository.save(superBatch);
+        }
+
+        if (!productRepository.existsByCode("BATCH_PORTAL")) {
             Products batchPortal = Products.builder()
                     .name("Batch Portal")
                     .code("BATCH_PORTAL")
@@ -78,7 +79,7 @@ public class SystemInitializer implements CommandLineRunner {
                     .canDelete(false)
                     .build();
 
-            productRepository.saveAll(List.of(superBatch, batchPortal));
+            productRepository.save(batchPortal);
         }
     }
 }

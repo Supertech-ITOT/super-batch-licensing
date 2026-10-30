@@ -1,10 +1,4 @@
-import {
-  Activity,
-  BadgeCheck,
-  FileText,
-  Layers3,
-  ShieldCheck,
-} from "lucide-react";
+import { Activity, BadgeCheck, FileText, Layers3, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import FeatureCard from "../../common/components/featurecard";
 import LoginCard from "../../features/auth/components/loginCard";
@@ -21,23 +15,7 @@ export default function ResetFirstPasswordPage() {
   return (
     <div className="h-full w-full flex flex-row overflow-hidden relative">
       <div className="absolute inset-0">
-        <Image
-          src="/light-bg.png"
-          alt="Background"
-          fill
-          priority
-          draggable={false}
-          className="object-cover dark:hidden"
-        />
-
-        <Image
-          src="/dark-bg.png"
-          alt="Background"
-          fill
-          priority
-          draggable={false}
-          className="hidden object-cover dark:block"
-        />
+        <Image src="/light-bg.png" alt="Background" fill priority draggable={false} className="object-cover" />
       </div>
       <div className="xl:flex hidden flex-1 flex-col ">
         <div className="relative z-10 flex flex-col h-full px-10 pt-10">
@@ -50,37 +28,20 @@ export default function ResetFirstPasswordPage() {
               height={100}
               draggable={false}
               sizes="(max-width: 768px) 320px, 640px"
-              className="h-auto w-auto object-contain dark:hidden"
-            />
-            <Image
-              src="/superbatch-dark.png"
-              alt="SuperBatch Dark Logo"
-              priority
-              width={640}
-              height={100}
-              draggable={false}
-              sizes="(max-width: 768px) 320px, 640px"
-              className="h-auto w-auto object-contain hidden dark:block"
+              className="h-auto w-auto object-contain"
             />
           </div>
           <div className="mt-8">
-            <h2 className="text-3xl font-bold">
-              Enterprise Batch Management Solution
-            </h2>
+            <h2 className="text-3xl font-bold">Enterprise Batch Management Solution</h2>
             <p className="text-md font-semibold leading-5 text-muted-foreground  max-w-xl text-justify mt-3">
-              SuperBatch is an advanced ISA-88 based batch management system
-              designed for process industries to achieve operational excellence,
+              SuperBatch is an advanced ISA-88 based batch management system designed for process industries to achieve operational excellence,
               product quality and regulatory compliance.
             </p>
           </div>
           {/* Features */}
           <div className="mt-12 flex flex-wrap gap-6">
             {finfo.map((item) => (
-              <FeatureCard
-                key={item.title}
-                icon={item.icon}
-                title={item.title}
-              />
+              <FeatureCard key={item.title} icon={item.icon} title={item.title} />
             ))}
           </div>
         </div>
